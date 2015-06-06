@@ -1,8 +1,9 @@
 {
-    "id": "Soulog a_0_00",
+    "id": "Soulog b1",
     "titulo":"Cartas a un dios caido",
     "autor":"Eugenio",
-    "posts":0,
+    "contraseña": "qwerty",
+    "salt": "2345665445",
 
     "nombre_db":"Soulog",
     "usuario_db":"SoulogAdmin",

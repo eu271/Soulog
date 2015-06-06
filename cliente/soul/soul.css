@@ -1,0 +1,22 @@
+body{
+    position: absolute;
+    margin: 0 auto;
+
+    width: 100%;
+    height: 100%;
+
+    background: black;
+    
+}
+
+#Editor {
+    background: red;
+}
+
+#Posts {
+    background: purple;
+}
+
+.post {
+    background: yellow
+}

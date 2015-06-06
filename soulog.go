@@ -36,7 +36,19 @@ func main() {
 	log.Println("Registrando las direcciones del blog.")
 	registrarDireccionFichero("/blog.css", "./cliente/blog.css", "text/css")
 	registrarDireccionFichero("/blog.js", "./cliente/blog.js", "application/javascript")
+	registrarDireccionFichero("/javascript_global/sha256.js", "./cliente/javascript_global/sha256.js", "application/javascript")
+	registrarDireccionFichero("/javascript_global/variables.js", "./cliente/javascript_global/variables.js", "application/javascript")
+
+	log.Println("Registrando direcciones de administracion")
+	registrarDireccionFichero("/admin", "./cliente/soul/soul.html", "text/html")
+	registrarDireccionFichero("/soul.css", "./cliente/soul/soul.css", "text/css")
+	registrarDireccionFichero("/soul.js", "./cliente/soul/soul.js", "application/javascript")
 
 	log.Println("Iniciando el servidor.")
+	/*
+			go func(){
+				http.ListenAndServeTLS(":8088", )
+		}
+		+*/
 	http.ListenAndServe(":8080", nil)
 }
