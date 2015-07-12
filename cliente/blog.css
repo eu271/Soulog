@@ -40,8 +40,15 @@ body{
 
     width: 80%;
     margin: 0 auto;
+    text-position: center;
+}
+
+.post{
+    background: rgba(0,0,0,0.4);
+
 }
 
 .postTitulo{
     text-align:center;
+    background: yellow;
 }

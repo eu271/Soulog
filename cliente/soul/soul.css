@@ -9,14 +9,223 @@ body{
     
 }
 
-#Editor {
-    background: red;
+h2 {
+    margin: 0;
 }
 
-#Posts {
+#Menu {
+    float: left;
+    display: block;
+
+    height: 100%;
+    width: 160px;
+
+    background: yellow;
+}
+
+#Menu a {
+    color: black;
+    text-decoration: none;
+}
+
+#menu-lista {
+    clear: left;
+    margin: 12px 0;
+    padding: 0;
+    list-style: none;
+}
+
+.menu-item {
+    padding: 10px;
+    background: blue;
+}
+.menu-item:hover {
     background: purple;
 }
 
+
+#Contenido {
+
+    height: 100%;
+
+    margin-left: 160px;
+    text-align: center;
+
+    background: orange;
+
+    padding: 15px 15px 0px 15px;
+    -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
+    -moz-box-sizing: border-box;    /* Firefox, other Gecko */
+    box-sizing: border-box;         /* Opera/IE 8+ */
+
+}
+
+#Editor {
+
+    background: red;
+
+    height: 100%;
+    
+   
+}
+
+#editor-form {
+    display: inline-block;
+    float:left;
+    
+    width: 75%;
+    height: 100%;
+}
+
+#tituloEditor {
+    display: block;
+    margin: 0 auto;
+
+    border: 0;
+    padding: 0;
+
+    border-bottom: 1px solid black;
+
+    width: 90%%;
+    height: 25px;
+
+    font-size: large;
+}
+#contenidoEditor {
+    display:block;
+    margin: 0 auto;
+
+    border: 0;
+    padding: 0;
+
+    resize: none;
+
+    width: 90%;
+    height: 80%;
+}
+
+#editor-config {
+    float: left;
+
+    width: 25%;
+    height:100%;
+}
+
+#fechaEditor {
+    display: block;
+    margin: 0 auto;
+
+    border: 0;
+    padding: 0;
+
+    border-bottom: 1px solid black;
+
+    height: 25px;
+    width: 154px;
+}
+
+.Calendario {
+
+    display: block;
+    width: 154px;
+    height: 154px;
+    background: yellow;
+
+    margin: 0 auto;
+}
+
+.calendario-dia {
+    display: inline-block;
+    width: 22px;
+    height: 22px;
+    float:left;
+    background: orange;
+
+    text-align: center;
+    line-height: 22px;
+
+    font-size: 9pt;
+}
+
+.calendario-dia:hover {
+    background: yellow;
+}
+
+.calendario-mes {
+
+    display:inline-block;
+
+    height: 22px;
+    width: 33%;
+
+    float:left;
+
+    text-align: center;
+    line-height: 22px;
+}
+
+.today {
+    background: red;
+}
+
+.seleccionado {
+    background: blue;
+}
+
+.calendario-flecha {
+    display: inline-block;
+    height: 50px;
+    width: 33%;
+    line-height: 50px;
+
+    float:left;
+
+    text-align:center;
+}
+#Posts {
+    background: purple;
+
+    height: 100%;
+    width: 100%;
+}
+
 .post {
-    background: yellow
+    background: yellow;
+    height: 10em;
+    width: 100%;
+    overflow: hidden;
+}
+
+#post-contenido {
+    margin-left: 160px;
+    height:100%;
+    word-wrap: break-word;
+}
+
+
+.post-opciones {
+    float: left;
+    width: 160px;
+    height: 100%;
+}
+.post-opciones a {
+    color: black;
+    text-decoration: none;
+}
+
+.post-opciones-lista {
+    clear: left;
+    margin: 12px 0;
+    padding: 0;
+    list-style: none;
+
+}
+.post-opciones-lista-item {
+    padding: 10px;
+    background: orange;
+
+}
+.post-opciones-lista-item:hover {
+    padding: 10px;
+    background: red;
 }

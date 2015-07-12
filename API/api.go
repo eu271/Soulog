@@ -112,14 +112,8 @@ func getSecion(peticion *json.Decoder) string {
 		return hex.EncodeToString(p[:])
 	}
 
-	if soulog.ExisteUsuario(p.Nombre) {
+	if !soulog.ExisteUsuario(p.Nombre) {
 		//return error usuario incorrecto
-	}
-	_, ok := seciones[p.Nombre]
-	if ok && time.Since(seciones[p.Nombre].Timestamp).Minutes() < secionCaducada {
-		//return error secion aun no caducada.
-		m, _ := json.Marshal(json_error{000, "Secion aun no caducada"})
-		return string(m)
 	}
 
 	c := soulog.GetContraseña(p.Nombre)
@@ -179,16 +173,17 @@ func autenticarSecion(p autenticarSecionJson) (bool, error) {
 
 		return true, nil
 	} else {
-		return false, errors.New("Secion incorrecta")
+		return false, errors.New("Secion incorrecta" + seciones[p.Nombre].hash)
 	}
 
 }
 
 func sendPost(peticion *json.Decoder) string {
 	type sendPostJson struct {
-		Titulo    string               `json: "titulo"`
-		Contenido string               `json:"contenido"`
-		Secion    autenticarSecionJson `json: "secion"`
+		Titulo           string               `json: "titulo"`
+		Contenido        string               `json:"contenido"`
+		FechaPublicacion time.Time            `json: "fechaPublicacion"`
+		Secion           autenticarSecionJson `json: "secion"`
 	}
 	var p sendPostJson
 	err := peticion.Decode(&p)
@@ -203,9 +198,10 @@ func sendPost(peticion *json.Decoder) string {
 		return string(m)
 	}
 	soulog.SendPost(soulObjetos.Post{
-		Id:        p.Titulo,
-		Titulo:    p.Titulo,
-		Contenido: p.Contenido,
+		Id:               p.Titulo,
+		Titulo:           p.Titulo,
+		Contenido:        p.Contenido,
+		FechaPublicacion: p.FechaPublicacion,
 	})
 	return "{}"
 }

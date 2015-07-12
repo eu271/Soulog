@@ -1,99 +1,216 @@
-var blog;
-var secion = {
-    "nombre": "Eugenio",
-    "contraseña": "qwerty"
-};
-var post = new Array();
-
-
-
-var enviarPost = function() {
-    var post = {
-        titulo : $('#tituloEditor').val(),
-        contenido : $('#contenidoEditor').val(),
-        secion : {
-            nombre : secion.nombre,
-            hash: secion.hash.toString()
-        }
-    };
-
-    console.log(post);
-    $.ajax({
-        method: "POST",
-        url:blog.url.sendPost,
-        data: JSON.stringify(post) 
-    })
-        .done(function(respuesta){
-            alert(respuesta); 
-        });
+Date.prototype.addDays = function(days) 
+{
+    var dat = new Date(this.valueOf());
+    dat.setDate(dat.getDate() + days);
+    return dat;
 }
 
-var eliminarPost = function(clave_post) {
-    var paquete = {
-        titulo : clave_post,
-        secion :{
-            nombre : secion.nombre,
-            hash:secion.hash.toString()
+var arrayDate = [[],[1,2,3,4,5,6,7],[1,2,3,4,5,6,7],[1,2,3,4,5,6,7],[1,2,3,4,5,6,7],[1,2,3,4,5,6,7]];
+
+var nodelistNodes = [[],[1,2,3,4,5,6,7],[1,2,3,4,5,6,7],[1,2,3,4,5,6,7],[1,2,3,4,5,6,7],[1,2,3,4,5,6,7]];
+
+var calendario = {
+    'month': [
+        'Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic' 
+    ],
+    'day': [
+        'Dom','Lun','Mar','Mie','Jue','Vie','Sab'
+    ],
+    'date': new Date(),
+    'today': new Date(),
+    'seleccionado': new Date(),
+
+    limpiarCalendario: function(){
+        var d = document.querySelectorAll(".seleccionado")[0];            
+        if(d!=undefined){
+            d.classList.remove("seleccionado");
         }
-    }
-    $.ajax({
-        method: "POST",
-        url:blog.url.deletePost,
-        data:JSON.stringify(paquete)
-    })
-        .done(function(s){
-            alert(s);
-        });
-}
 
+        var i=1;
+        var j=0;
+        var count = 0;
+        var dateTem;
+        for( var c=1; c<8; c++){
+            document.querySelectorAll("#calendario-semana-1 #calendario-dia-"+c)[0].innerHTML = '';
+            arrayDate[1][c] = dateTem;
+        }
+        var d = document.querySelectorAll(".today")[0];
+        if( d!=undefined ) {
+            d.classList.remove("today");
+        }
 
-var pedirSecion = function(){
+    },
     
-    var _peticion = {
-        "Nombre": secion.nombre
+    setFunctions: function() {
+
+        var hacerLlamada = function(i,j){
+            return function(){
+                var d = document.querySelectorAll(".seleccionado")[0];            
+                if(d!=undefined){
+                    d.classList.remove("seleccionado");
+
+                }
+                nodelistNodes[i][j].classList.add("seleccionado");
+                calendario.seleccionado = arrayDate[i][j];
+                var sel = calendario.seleccionado;
+                $('#fechaEditor').val(calendario.day[sel.getDay()] + " " + sel.getDate() + " " + calendario.month[sel.getMonth()]);
+            }
+        }
+        
+        for(var i=1;i<6;i++){
+            for(var j=1;j<8;j++){
+                nodelistNodes[i][j] = document.querySelectorAll("#calendario-semana-"+ i + " #calendario-dia-"+j)[0];
+                nodelistNodes[i][j].addEventListener('click', hacerLlamada(i,j),true);
+            }
+        }
+        
+    },
+    imprimirCalendario: function() {
+
+        var i=1;
+        var j=0;
+        var count = 0;
+        var dateTem;
+        for( var c=1; c<8; c++){
+            document.querySelectorAll("#calendario-semana-1 #calendario-dia-"+c)[0].innerHTML = '';
+            arrayDate[1][c] = dateTem;
+        }
+        var d = document.querySelectorAll(".today")[0];
+        if( d!=undefined ) {
+            d.classList.remove("today");
+        }
+        var d = document.querySelectorAll(".seleccionado")[0];            
+        if(d!=undefined){
+            d.classList.remove("seleccionado");
+        }
+
+        calendario.date.setDate(1);
+        
+        document.querySelectorAll(".calendario-mes")[0].innerHTML =  calendario.month[calendario.date.getMonth()] + " " + calendario.date.getFullYear() ;
+
+
+        
+        for( var c=calendario.date.getDay()==0?7:calendario.date.getDay(); c<8; c++){
+            j++;
+            var casilla = document.querySelectorAll("#calendario-semana-"+i+" #calendario-dia-"+c)[0];
+            dateTem = calendario.date.addDays(count);
+            casilla.innerHTML = dateTem.getDate();
+
+            dateTem.setHours(calendario.today.getHours(),
+                    calendario.today.getMinutes(),
+                    calendario.today.getSeconds(),
+                    calendario.today.getMilliseconds());
+            if ( dateTem.toString() == calendario.today.toString() ) {
+                casilla.classList.add("today");
+            }
+            if ( dateTem.toString() == calendario.seleccionado.toString() ) {
+                casilla.classList.add("seleccionado");
+            }
+            arrayDate[1][c] = dateTem;
+
+            count++;
+        }
+
+
+        for( i=2; i<6; i++){
+            for( j=1; j<8; j++){
+                
+                var casilla = document.querySelectorAll("#calendario-semana-"+i+" #calendario-dia-"+j)[0];
+                dateTem = calendario.date.addDays(count);
+                casilla.innerHTML = dateTem.getDate();
+
+                dateTem.setHours(calendario.today.getHours(),
+                    calendario.today.getMinutes(),
+                    calendario.today.getSeconds(),
+                    calendario.today.getMilliseconds());
+                if ( dateTem.toString() == calendario.today.toString() ) {
+                    casilla.classList.add("today");
+                }
+                if ( dateTem.toString() == calendario.seleccionado.toString() ) {
+                    casilla.classList.add("seleccionado");
+                }
+
+                arrayDate[i][j] = dateTem;
+
+                count++;
+            } 
+        }
+
+    },
+
+    setDate: function(d) {
+        calendario.seleccion = new Date(d);
+    },
+
+    nextMonth: function(){
+        calendario.date.setMonth((calendario.date.getMonth()+1));
+        calendario.imprimirCalendario();
+    },
+
+    prevMonth: function(){
+        calendario.date.setMonth((calendario.date.getMonth()-1));
+        calendario.imprimirCalendario();
     }
 
-    $.ajax({
-        method: "POST",
-        url:blog.url.getSecion,
-        data: JSON.stringify(_peticion) 
-    })
-        .done(function(s){
-            s = JSON.parse(s);
-            secion.secion = s.secion;
-            secion.timestamp = s.timestamp;
-            secion.hash = CryptoJS.SHA256(secion.nombre+secion.contraseña+secion.secion);
-    })
-}
 
-var vista = {
-    añadirPost : function(p){
-        var stringHTML = '<div class="post" id="' + p.id + '">' +
-            '<h2 class="titulo" id="titulo'+ p.id +'">' + p.titulo + '</h2>'+
-            '<p class="contenido" id="contenido'+ p.id+ '">' +p.contenido + '</p></div>';
+};
 
-        $('#Posts').append(stringHTML);
+
+var vistaAdmin = {
+    "editor": true,
+    "post": false,
+
+
+    mostrarEditor : function() {
+        if( this.post ){
+            this.post = false;
+            this.editor = true;
+            $('#Posts').css('display', 'none');
+            $('#Editor').css('display', 'block');
+        }
+    },
+    mostrarPosts: function() {
+        if( this.editor ){
+            this.post = true;
+            this.editor = false;
+            $('#Posts').css('display', 'block');
+            $('#Editor').css('display', 'none');
+        }
+    },
+
+    enviarPost:function(){
+        var post = {
+            titulo: $('#tituloEditor').val(),
+            contenido: $('#contenidoEditor').val(),
+            fechaPublicacion: calendario.seleccionado
+        };
+        blog.enviarPost(post);
     }
+
 }
 
-var ppp;
 
-var pedirPosts = function() {
-    $.ajax({
-        method: "POST",
-        url:blog.url.getPosts,
-        data:'{"cantidad":1}'
-    })
-        .done(function(s){
-            $.map(JSON.parse(s), function(v, i){
-                 vista.añadirPost(v);
-            });
-        });
-}
 
 $(document).ready(function(){
-    secion.contraseña = CryptoJS.SHA256(secion.contraseña).toString()
+    secion.contraseña = CryptoJS.SHA256(secion.contraseña).toString();
 
-    pedirSecion();
+    calendario.imprimirCalendario(); 
+    calendario.setFunctions();
+
+
+    if(vistaAdmin.editor) {
+        $("#Posts").css("display", "none");
+    }else{
+        $("#Editor").css("display", "none");
+    }
+
+    $('#menu-item-editor').click(function(){
+        vistaAdmin.mostrarEditor();
+    });
+    $('#menu-item-posts').click(function(){
+        vistaAdmin.mostrarPosts();
+    });
+    
+
 });
 
