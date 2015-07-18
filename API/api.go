@@ -226,6 +226,15 @@ func deletePost(peticion *json.Decoder) string {
 	soulog.DeletePost(p.Titulo)
 	return "{}"
 }
+
+func enviarPost(w http.ResponseWriter, r *http.Request) {
+	if r.Method == "GET" {
+		titulo := r.URL.Path[len("/post/"):]
+		log.Println("Se esta pidiendo " + titulo)
+		http.ServeContent(w, r, "post", time.Now(), strings.NewReader(soulog.GetPost(titulo)))
+	}
+}
+
 func AgregarFunciones() {
 
 	soulog = soulogBlog.AbrirBlog()
@@ -240,4 +249,6 @@ func AgregarFunciones() {
 	http.HandleFunc("/getSecion", crearLlamada("getSecion", getSecion))
 	http.HandleFunc("/sendPost", crearLlamada("sendPost", sendPost))
 	http.HandleFunc("/deletePost", crearLlamada("deletePost", deletePost))
+
+	http.HandleFunc("/post/", enviarPost)
 }

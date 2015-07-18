@@ -59,7 +59,7 @@ type Soulog interface {
 }
 
 func (b blog) GetPost(id string) string {
-	return "{\"titulo\":\"soy un titulo bonito\"}"
+	return b.soulogDb.GetPost(id)
 }
 
 func (b blog) GetPosts(cantidad uint64) string {

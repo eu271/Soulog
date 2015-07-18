@@ -58,7 +58,13 @@ func (mango mongoDb) GetCantidad() uint64 {
 }
 
 func (mango mongoDb) GetPost(id string) string {
-	return "{\"titulo\":\"La caida de mi ser\", \"contenido\":\"Bueno, dios me dejo solo.Y ahora ya no se que hacer con miv vida para variar...\"}"
+	var p []byte
+	var _p soulObjetos.Post
+
+	_ = mango.posts.Find(bson.M{"id": id}).One(&_p)
+	p, _ = json.Marshal(_p)
+	return string(p)
+
 }
 
 func (mango mongoDb) GetPosts(cantidad uint64) string {

@@ -159,6 +159,7 @@ var calendario = {
 var vistaAdmin = {
     "editor": true,
     "post": false,
+    "ideas": false,
 
 
     mostrarEditor : function() {
