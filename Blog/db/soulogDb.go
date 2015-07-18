@@ -16,6 +16,7 @@ type mongoDb struct {
 
 	session_soulog *mgo.Session
 	posts          *mgo.Collection
+	imagenes *mgo.Collection
 }
 
 func AbrirDb(host, nombre, usuario, contraseña string) SoulogDb {
@@ -36,7 +37,8 @@ func AbrirDb(host, nombre, usuario, contraseña string) SoulogDb {
 	}
 
 	mango.posts = mango.session_soulog.DB(mango.nombre).C("Posts")
-
+	mango.imagenes = mango.session_soulog.DB(mango.nombre).C("Imagenes")
+	
 	return mango
 }
 
@@ -47,6 +49,9 @@ type SoulogDb interface {
 
 	SendPost(post soulObjetos.Post) error
 	DeletePost(id string) error
+	
+	GetImagen(nombre string) []byte
+	InsertarImagen(imagen []byte, nombre string) error
 }
 
 func (mango mongoDb) GetCantidad() uint64 {
@@ -89,4 +94,27 @@ func (mango mongoDb) SendPost(post soulObjetos.Post) error {
 func (mango mongoDb) DeletePost(id string) error {
 	_, err := mango.posts.RemoveAll(bson.M{"id": id})
 	return err
+}
+
+func (mango mongoDb) InsertarImagen(imagen []byte, nombre string) error {
+	return mango.imagenes.Insert(bson.M{ "id":nombre, "imagen":imagen})
+}
+
+func (mango mongoDb) GetImagen(nombre string) []byte {
+	type img struct {
+		Id string
+		Imagen string
+	}
+	var _p img
+	
+	log.Println(nombre)
+	
+	err := mango.imagenes.Find(bson.M{"id": nombre}).One(&_p)
+	if err != nil {
+		log.Println("Error reciviendo la imagen de la base de datos: " + err.Error())
+	}
+	
+	log.Println("La imagen " + _p.Id + " ha sido recogida de la base de datos.")
+	return []byte(_p.Imagen)
+
 }

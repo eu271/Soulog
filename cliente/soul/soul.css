@@ -13,47 +13,119 @@ h2 {
     margin: 0;
 }
 
-#Menu {
+#editor-config-extra-shadow {
+    
+    display:none;
+    position: absolute;
+    
+    top:0;
+    bottom: 0;
+    right: 33%;
+    left: 0;
+    
     float: left;
+    
+    background: rgba(0,0,0,0.8);
+    
+    z-index: 10000;
+}
+#editor-config-extra {
+    display: none;
+    position: absolute;
+    
+    text-align: center;
+    
+    top:0;
+    bottom: 0;
+    right: 0px;
+    left: 66%;
+    
+    float: right;
+    
+    background: white;
+    
+    z-index: 10000;
+}
+
+#Menu {
     display: block;
+    
+    position: fixed;
+    top:0;
+    left: 0;
+    
+    padding: 5px 0px 5px 0px;
+    
+    height: 40px;
+    width: 100%;
 
-    height: 100%;
-    width: 160px;
-
-    background: yellow;
+    background: black;
 }
 
 #Menu a {
-    color: black;
+    color: rgba(255, 255, 255, 0.7);;
     text-decoration: none;
 }
 
-#menu-lista {
-    clear: left;
-    margin: 12px 0;
-    padding: 0;
-    list-style: none;
+#Menu a:hover {
+    color: rgba(255, 255, 255, 0.7);;
+    text-decoration: none;
 }
 
 .menu-item {
-    padding: 10px;
-    background: blue;
+    display: inline-block;
+    height: 30px;
+    min-width: 100px;
+    ccc    
+    
+    line-height: 30px;
+    text-align: center;
+    text-transform: uppercase;
+    
+    color: whitesmoke;
+    background: black;
+    transition: background 0.6s, color 0.6s;
+}
+
+#home {
+    font-size: 1.5em;
+    width: 50px;
+    min-width: 50px; !important;
+    margin-right: 50px;
+    
 }
 .menu-item:hover {
-    background: purple;
+    color: whitesmoke;
+    background: darkslategray;
 }
 
+#ayudaMarkdown {
+    display: none;
+    position: absolute;
+    top: 0;
+    bottom: 0px;
+    z-index: 1050;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.8);
+}
 
 #Contenido {
+    position: absolute;
+    top: 40px;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    
+    overflow-x: hidden;
+    overflow-y: auto;
 
-    height: 100%;
-
-    margin-left: 160px;
     text-align: center;
 
-    background: orange;
+    background: white;
 
-    padding: 15px 15px 0px 15px;
+    padding: 15px 0px 0px 0px;
     -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
     -moz-box-sizing: border-box;    /* Firefox, other Gecko */
     box-sizing: border-box;         /* Opera/IE 8+ */
@@ -61,10 +133,13 @@ h2 {
 }
 
 #Editor {
-
-    background: red;
-
+    display: block;
     height: 100%;
+    width: 100%;
+    background: red;
+    
+    font-size: 0.9em;
+    
     
    
 }
@@ -73,35 +148,179 @@ h2 {
     display: inline-block;
     float:left;
     
-    width: 75%;
-    height: 100%;
+    height:calc(-100px + 100%);
+    width: 50%;
+    
+    border-top: 1px lightgray solid;
+    
+    
+    
+    background: white;
 }
 
+#editor-preview {
+    display: inline-block;
+    
+    float:right;
+    
+    width: 50%;
+    height:calc(-100px + 100%);
+    text-align: left;
+    
+    background: whitesmoke;
+    
+    border: 1px lightgray solid;
+    
+    padding: 40px;
+    
+    word-break: break-word;
+    
+    
+    font: 100%/1.65 "Open Sans", sans-serif;
+    
+    overflow: auto;
+    
+    -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
+    -moz-box-sizing: border-box;    /* Firefox, other Gecko */
+    box-sizing: border-box;         /* Opera/IE 8+ */
+    
+}
+
+#editor-foot {
+    display:block;
+    
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    
+    height: 40px;
+    
+    background: darkslategray;
+}
+
+#editor-foot {
+   background: black;
+    height: 40px;
+}
+#editor-tags {  
+    display: inline-block;
+    height: 40px;
+    
+    width:calc(-150px + 100%);
+    float:left;
+    
+    padding: 10px;
+    -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
+    -moz-box-sizing: border-box;    /* Firefox, other Gecko */
+    box-sizing: border-box;         /* Opera/IE 8+ */
+     
+}
+
+textarea:focus, input:focus{
+    outline: 0;
+}
+
+#editor-tags-input {
+    display: inline-block;
+    width:calc(-250px + 100%);
+    float:left;
+ 
+    margin: 0 auto;
+
+    border: 0;
+    
+    color: white;
+    background: black;
+}
+#editor-tags-label {
+    display: inline-block;
+    float: left;
+    width: 100px;
+    color:rgba(255, 255, 255, 0.7);
+}
+#editor-boton {
+    display: inline-block;
+    float: right;
+    
+    height: 30px;
+    
+    margin: 5px 0 5px 0;
+    
+    width: 100px;
+    
+    border-radius: 5px;
+    float: right;
+    
+    background: darkolivegreen;
+    border: 0;
+}
+
+#editor-boton-config {
+    display: inline-block;
+    float: right;
+    
+    height: 30px;
+    
+    margin: 5px 0 5px 0;
+    
+    width: 50px;
+    
+    border-radius: 5px;
+    
+    background: darkolivegreen;
+    border: 0;
+}
+
+#editor-boton-config:hover {
+    background: brown;
+}
+#editor-boton:hover {
+    background: brown;
+}
 #tituloEditor {
     display: block;
     margin: 0 auto;
 
     border: 0;
-    padding: 0;
+    padding: 0px 20px 0px 20px;
 
-    border-bottom: 1px solid black;
+    
+    font-family: 'Open Sans', sans-serif;
+    font-kerning: auto;
+    font-size: 30px;
+    font-stretch: normal;
+    font-style: normal;
+    font-variant: normal;
+    font-variant-ligatures: normal;
+    font-weight: bold;
+    letter-spacing: -1px;
+    
 
-    width: 90%%;
-    height: 25px;
+    width: 100%;
+    height: 60px;
 
-    font-size: large;
 }
 #contenidoEditor {
     display:block;
     margin: 0 auto;
 
     border: 0;
-    padding: 0;
+    
+    padding: 40px;
+    
+    -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
+    -moz-box-sizing: border-box;    /* Firefox, other Gecko */
+    box-sizing: border-box;         /* Opera/IE 8+ */
 
     resize: none;
+    
+    font-size: 0.9em;
+    font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace;
+    color: #3c4043;
 
-    width: 90%;
-    height: 80%;
+    width: 100%;
+    height: 100%;
 }
 
 #editor-config {
@@ -128,8 +347,10 @@ h2 {
 
     display: block;
     width: 154px;
-    height: 154px;
-    background: yellow;
+    height: 190px;
+    background: white;
+    
+    border:1px solid black;
 
     margin: 0 auto;
 }
@@ -139,16 +360,18 @@ h2 {
     width: 22px;
     height: 22px;
     float:left;
-    background: orange;
+    background: white;
 
     text-align: center;
     line-height: 22px;
 
     font-size: 9pt;
+    
+        border-top: 1px solid black;
 }
 
 .calendario-dia:hover {
-    background: yellow;
+    background: lightblue;
 }
 
 .calendario-mes {
@@ -157,6 +380,8 @@ h2 {
 
     height: 22px;
     width: 33%;
+    
+
 
     float:left;
 
@@ -165,11 +390,11 @@ h2 {
 }
 
 .today {
-    background: red;
+    background: seagreen;
 }
 
 .seleccionado {
-    background: blue;
+    background: orangered;
 }
 
 .calendario-flecha {
@@ -185,7 +410,6 @@ h2 {
 #Posts {
     background: purple;
 
-    height: 100%;
     width: 100%;
 }
 

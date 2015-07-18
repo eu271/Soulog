@@ -8,13 +8,9 @@ Date.prototype.addDays = function(days)
 var arrayDate = [[],[1,2,3,4,5,6,7],[1,2,3,4,5,6,7],[1,2,3,4,5,6,7],[1,2,3,4,5,6,7],[1,2,3,4,5,6,7]];
 
 var nodelistNodes = [[],[1,2,3,4,5,6,7],[1,2,3,4,5,6,7],[1,2,3,4,5,6,7],[1,2,3,4,5,6,7],[1,2,3,4,5,6,7]];
-
 var calendario = {
     'month': [
         'Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic' 
-    ],
-    'day': [
-        'Dom','Lun','Mar','Mie','Jue','Vie','Sab'
     ],
     'date': new Date(),
     'today': new Date(),
@@ -52,8 +48,6 @@ var calendario = {
                 }
                 nodelistNodes[i][j].classList.add("seleccionado");
                 calendario.seleccionado = arrayDate[i][j];
-                var sel = calendario.seleccionado;
-                $('#fechaEditor').val(calendario.day[sel.getDay()] + " " + sel.getDate() + " " + calendario.month[sel.getMonth()]);
             }
         }
         
@@ -183,7 +177,6 @@ var vistaAdmin = {
         var post = {
             titulo: $('#tituloEditor').val(),
             contenido: $('#contenidoEditor').val(),
-            fechaPublicacion: calendario.seleccionado
         };
         blog.enviarPost(post);
     }
@@ -195,9 +188,26 @@ var vistaAdmin = {
 $(document).ready(function(){
     secion.contraseña = CryptoJS.SHA256(secion.contraseña).toString();
 
+    $("#contenidoEditor").on('keypress', function(){
+        $("#editor-preview-post").html(mmd($("#contenidoEditor").val()));
+        
+        var toTop = $("#editor-preview").prop('scrollHeight')
+        *(0.01*((100*$("#contenidoEditor").scrollTop())
+            /$("#contenidoEditor").prop('scrollHeight')));
+        $("#editor-preview").scrollTop(toTop);
+    });
+    
+    $("#contenidoEditor").on('scroll', function(){
+        var toTop = $("#editor-preview").prop('scrollHeight')
+        *(0.01*((100*$("#contenidoEditor").scrollTop())
+            /$("#contenidoEditor").prop('scrollHeight')));
+        $("#editor-preview").scrollTop(toTop);
+    });
+    
     calendario.imprimirCalendario(); 
     calendario.setFunctions();
-
+    
+    $("#Ideas").css("display", "none");
 
     if(vistaAdmin.editor) {
         $("#Posts").css("display", "none");

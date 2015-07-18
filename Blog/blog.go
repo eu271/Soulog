@@ -6,6 +6,8 @@ import (
 	"github.com/eu271/Soulog/Blog/objetos"
 	"io/ioutil"
 	"log"
+	"io"
+	"bytes"
 )
 
 type blog struct {
@@ -56,6 +58,9 @@ type Soulog interface {
 
 	SendPost(post soulObjetos.Post) error
 	DeletePost(id string) error
+	
+	GetImagen(nombre string) []byte
+	ImagenUpload(imagen io.Reader, nombre string)
 }
 
 func (b blog) GetPost(id string) string {
@@ -111,4 +116,17 @@ func (b blog) SendPost(post soulObjetos.Post) error {
 
 func (b blog) DeletePost(id string) error {
 	return b.soulogDb.DeletePost(id)
+}
+
+func (b blog) ImagenUpload(imagen io.Reader, nombre string) {
+	buf := new(bytes.Buffer)
+	buf.ReadFrom(imagen)
+	err := b.soulogDb.InsertarImagen(buf.Bytes(), nombre)
+	if err != nil {
+		log.Println("Error subiendo imagen " + err.Error())
+	}
+}
+
+func (b blog) GetImagen(nombre string) []byte {
+	return b.soulogDb.GetImagen(nombre)
 }
