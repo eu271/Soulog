@@ -183,13 +183,15 @@ var vistaAdmin = {
 
 }
 
+var reader = new commonmark.Parser();
+var writer = new commonmark.HtmlRenderer();
 
 
 $(document).ready(function(){
     secion.contraseña = CryptoJS.SHA256(secion.contraseña).toString();
 
     $("#contenidoEditor").on('keypress', function(){
-        $("#editor-preview-post").html(mmd($("#contenidoEditor").val()));
+        $("#editor-preview-post").html(writer.render(reader.parse($("#contenidoEditor").val())));
         
         var toTop = $("#editor-preview").prop('scrollHeight')
         *(0.01*((100*$("#contenidoEditor").scrollTop())
@@ -221,6 +223,7 @@ $(document).ready(function(){
     $('#menu-item-posts').click(function(){
         vistaAdmin.mostrarPosts();
     });
+    
     
 
 });

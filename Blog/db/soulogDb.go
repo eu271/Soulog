@@ -47,7 +47,7 @@ type SoulogDb interface {
 	GetPosts(cantidad uint64) string
 	GetCantidad() uint64
 
-	SendPost(post soulObjetos.Post) error
+	SendPost(post soulObjects.Post) error
 	DeletePost(id string) error
 	
 	GetImagen(nombre string) []byte
@@ -64,7 +64,7 @@ func (mango mongoDb) GetCantidad() uint64 {
 
 func (mango mongoDb) GetPost(id string) string {
 	var p []byte
-	var _p soulObjetos.Post
+	var _p soulObjects.Post
 
 	_ = mango.posts.Find(bson.M{"id": id}).One(&_p)
 	p, _ = json.Marshal(_p)
@@ -74,7 +74,7 @@ func (mango mongoDb) GetPost(id string) string {
 
 func (mango mongoDb) GetPosts(cantidad uint64) string {
 	var p string
-	var _p soulObjetos.Post
+	var _p soulObjects.Post
 	i := mango.posts.Find(nil).Iter()
 	p = "["
 	for i.Next(&_p) {
@@ -87,7 +87,7 @@ func (mango mongoDb) GetPosts(cantidad uint64) string {
 
 	return p
 }
-func (mango mongoDb) SendPost(post soulObjetos.Post) error {
+func (mango mongoDb) SendPost(post soulObjects.Post) error {
 	return mango.posts.Insert(post)
 }
 

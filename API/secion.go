@@ -43,6 +43,7 @@ func getSecion(peticion *json.Decoder) string {
 	}
 
 	crearNumero := func() string {
+		//TODO: Should be cryptographically secure random number.
 		p := sha1.Sum([]byte(time.Now().String()))
 		return hex.EncodeToString(p[:])
 	}

@@ -56,7 +56,7 @@ type Soulog interface {
 	ExisteUsuario(Nombre string) bool
 	GetContraseña(Nombre string) string
 
-	SendPost(post soulObjetos.Post) error
+	SendPost(post soulObjects.Post) error
 	DeletePost(id string) error
 	
 	GetImagen(nombre string) []byte
@@ -110,7 +110,7 @@ func (b blog) GetContraseña(Nombre string) string {
 	return "65e84be33532fb784c48129675f9eff3a682b27168c0ea744b2cf58ee02337c5" //qwerty
 }
 
-func (b blog) SendPost(post soulObjetos.Post) error {
+func (b blog) SendPost(post soulObjects.Post) error {
 	return b.soulogDb.SendPost(post)
 }
 

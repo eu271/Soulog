@@ -3,7 +3,7 @@ package soulogApi
 import (
 	"encoding/json"
 	"github.com/eu271/Soulog/Blog"
-	"github.com/eu271/Soulog/Blog/objetos"
+	//"github.com/eu271/Soulog/Blog/objetos"
 	"log"
 	"net/http"
 	"strings"
@@ -92,12 +92,14 @@ func sendPost(peticion *json.Decoder) string {
 		m, _ := json.Marshal(json_error{000, err.Error()})
 		return string(m)
 	}
-	soulog.SendPost(soulObjetos.Post{
+	/*
+	soulog.SendPost(soulObjects.Post{
 		Id:               p.Titulo,
 		Titulo:           p.Titulo,
 		Contenido:        p.Contenido,
 		FechaPublicacion: p.FechaPublicacion,
 	})
+	*/
 	return "{}"
 }
 
@@ -160,7 +162,7 @@ func AgregarFunciones() {
 	log.Println("Agregando funciones a la API")
 
 	http.HandleFunc("/getPost", crearLlamada("getPost", getPost))
-	http.HandleFunc("/getTitulo", crearLlamada("getTitulo", getTitulo))
+	http.HandleFunc("/getBlogTitle", crearLlamada("getBlogTitle", getTitulo))
 	http.HandleFunc("/getSoul", crearLlamada("getSoul", getSoul))
 	http.HandleFunc("/getPosts", crearLlamada("getPosts", getPosts))
 

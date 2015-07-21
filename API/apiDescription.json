@@ -1,0 +1,23 @@
+{
+	"version" : 0,
+	"methods" : {
+		"getPost" : {
+			"name" : "GetPost",
+			"url" : "/getPost",
+			"description" : "Returns a post given an post id."
+			
+		},
+		"getBlogTitle" : {
+			"name" : "GetBlogTitle",
+			"url" : "/getBlogTitle",
+			"description" : "Returns the post title."
+		},
+		"getSoul" : {
+			"name" : "GetSoul",
+			"url" : "/getSoul",
+			"description" : "Returns all the blog information."
+		},
+		"get"
+	}
+	
+}
