@@ -1,16 +1,17 @@
+/* global $ */
 /*
 	Copyright (c) 2015 Eugenio Ochoa
-	
+
 	Permission is hereby granted, free of charge, to any person obtaining a copy
 	of this software and associated documentation files (the "Software"), to deal
 	in the Software without restriction, including without limitation the rights
 	to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 	copies of the Software, and to permit persons to whom the Software is
 	furnished to do so, subject to the following conditions:
-	
+
 	The above copyright notice and this permission notice shall be included in all
 	copies or substantial portions of the Software.
-	
+
 	THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 	IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 	FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -20,52 +21,42 @@
 	SOFTWARE.
 */
 
-var setTitulo = function(titulo){
-    $('#tituloBlog').text(titulo);
+var lectureModeToggle = function () {
+
+  if (!this.isClose_lectureModeToggle) {
+		this.isClose_lectureModeToggle = true
+    $('header').css('left', '-400px')
+    $('.content').css('left', '0')
+    $('.content').css('padding-left', '50px')
+    $('.content').css('padding-right', '50px')
+    $('#closeheader').html('<i class="fa fa-chevron-right"></i>')
+  }else{
+		this.isClose_lectureModeToggle = false
+    $('header').css('left', '0px');
+    $('.content').css('left', '400px')
+    $('.content').css('right', '0px')
+
+    $('.content').css('padding-left', '20px')
+    $('.content').css('padding-right', '20px')
+    $('#closeheader').html('<i class="fa fa-chevron-left"></i>')
+  }
 }
 
-var getBlog = function() {
-    setTitulo("Cartas a un dios caido"); 
+var toggleComments = function () {
+
+  if (this.isClose_lectureModeToggle){
+    $('.content').css('right', '500px')
+  }
+
+  if (this.isClose_toggleComments) {
+    this.isClose_toggleComments = false
+    $('#comments').css('display', 'none');
+    $('#closecomments').css('display', 'none');
+
+    $('.content').css('right', '0px')
+  }else {
+    this.isClose_toggleComments = true
+    $('#comments').css('display', 'block');
+    $('#closecomments').css('display', 'block');
+  }
 }
-
-
-$(document).ready(function(){
-    getBlog();
-
-    blog.pedirPosts(10, vista.añadirPost);
-    
-    
-    var templatePost = function(cantidad, funcmap) {
-        $.ajax({
-            method: "GET",
-            url:"http://localhost:8080/templates/post.html.mustache"
-            })
-        .done(function(s){
-            var post = {
-                'Titulo': 'My interesting post',
-                'Date': '0001-01-01T00:00:00Z',
-                'Tags': [
-                    {Tag:'interesting', TagLink:'interesting'},
-                    {Tag:'my', TagLink:'my'}
-                ],
-                'Contenido': '[...] ## This is an interesting text about an interesting topic. [...]',
-                
-                
-                
-                'DateSimple': function(){ return 'returns a date in format yyyy-mm-dd'},
-                'RenderDate': function(){ return 'returns a date in a human-readable format'},
-                
-                'RenderMarkdown': function(){ return 'returns "Contenido" render as html'}
-            }
-            
-            var output = Mustache.render(s, post);
-            
-            $('#contenido').append(output);
-        });
-    };
-    
-    templatePost();
-    
-});
-
-
