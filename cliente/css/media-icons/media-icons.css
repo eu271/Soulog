@@ -1,4 +1,4 @@
-.social-icon { background: url('media_icons.png') no-repeat top left; width: 32px; height: 32px; display: block; float:left;}
+.social-icon { background: url('media-icons.png') no-repeat top left; width: 32px; height: 32px; display: block; float:left;}
 .youtubeicon { background-position: 0 0; }
 .twittericon { background-position: 0 -32px; }
 .twitchicon { background-position: 0 -64px; }
@@ -26,7 +26,7 @@
 
 
 
-.social-share { background: url('media_share.png') no-repeat top left; width: 24px; height: 24px; display: inline-block; }
+.social-share { background: url('media-share.png') no-repeat top left; width: 24px; height: 24px; display: inline-block; }
 .yummly-shareicon { background-position: 0 -10px; }
 .vk-shareicon { background-position: -24px -10px; }
 .tumblr-shareicon { background-position: -72px -10px; }
