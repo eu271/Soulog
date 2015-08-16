@@ -19,39 +19,16 @@
 	OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 	SOFTWARE.
 */
-
 package soulObjects
 
-import (
-	"log"
-	"regexp"
-	"strings"
+type SoulogDb interface {
+	GetPost(id string) string
+	GetPosts(cantidad uint64) string
+	GetCantidad() uint64
 
-	"unicode"
+	SendPost(post Post) error
+	DeletePost(id string) error
 
-	"golang.org/x/text/transform"
-	"golang.org/x/text/unicode/norm"
-)
-
-func createSlugFromTitle(title string) string {
-
-	urlNotPermited := regexp.MustCompile("[^a-zA-Z0-9 -]")
-	omitableInUrl := regexp.MustCompile("[ -]+")
-	dash := "-"
-
-	slug := strings.ToLower(title)
-	isMn := func(r rune) bool {
-		return unicode.Is(unicode.Mn, r) // Mn: nonspacing marks
-	}
-	t := transform.Chain(norm.NFD, transform.RemoveFunc(isMn), norm.NFC)
-	slug, _, _ = transform.String(t, slug)
-
-	//TODO: Support other alphabets.
-
-	slug = urlNotPermited.ReplaceAllString(slug, dash)
-	slug = omitableInUrl.ReplaceAllString(slug, dash)
-
-	log.Println(slug)
-
-	return slug
+	GetImagen(nombre string) []byte
+	InsertarImagen(imagen []byte, nombre string) error
 }

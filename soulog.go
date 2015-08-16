@@ -26,7 +26,8 @@ import (
 	"log"
 	"net/http"
 	"os"
-
+	"io/ioutil"
+	"encoding/json"
 	//"time"
 	//"github.com/eu271/Soulog/Blog/objetos"
 
@@ -34,16 +35,19 @@ import (
 )
 
 const (
-	ConfigFile = "./config.json"
 	Index      = "./cliente/blog.html"
 )
 
-func ServirIndex(w http.ResponseWriter, r *http.Request) {
-	http.ServeFile(w, r, Index)
+type fileToServeStruct struct {
+	ServeFiles []struct {
+		FilePath string `json: "filePath"`
+		FilePathServe string `json: "filePathServe"`
+		ContentType string `json: "contentType"`
+	}
 }
 
-func ServirIndex1(w http.ResponseWriter, r *http.Request) {
-	http.ServeFile(w, r, ConfigFile)
+func ServirIndex(w http.ResponseWriter, r *http.Request) {
+	http.ServeFile(w, r, Index)
 }
 
 func registrarDireccionFichero(patron string, fichero string, tipo string) {
@@ -54,64 +58,45 @@ func registrarDireccionFichero(patron string, fichero string, tipo string) {
 }
 
 func ServeTLS(w http.ResponseWriter, r *http.Request) {
-// Generate the developer certificates:
-//openssl req -newkey rsa:2048 -new -nodes -x509 -days 3650 -keyout key.pem -out cert.pem
+	// Generate the developer certificates:
+	//openssl req -newkey rsa:2048 -new -nodes -x509 -days 3650 -keyout key.pem -out cert.pem
 
 	log.Println("Asking for loging webpage.")
-	http.ServeFile(w, r, ConfigFile)
+	http.ServeFile(w, r, Index)
+}
+
+func loadFiles() {
+	var filesToServe fileToServeStruct
+
+	filesToServeString, _ := ioutil.ReadFile("filesToServe.json")
+	err := json.Unmarshal(filesToServeString, &filesToServe)
+	if err != nil {
+		log.Println("Error decoding the default configuration. " + err.Error())
+	}
+
+	log.Println("Adding BlogResources to the URLs available to send.")
+
+	for _, f := range filesToServe.ServeFiles {
+		registrarDireccionFichero(f.FilePathServe, f.FilePath, f.ContentType)
+	}
 }
 
 func main() {
 
+
+
 	log.SetPrefix("Debug: ")
 	log.SetOutput(os.Stdout)
+
+	loadFiles()
 
 	soulogApi.AgregarFunciones()
 
 	http.HandleFunc("/", ServirIndex)
 
-	log.Println("Adding BlogResources to the URLs available to send.")
-	registrarDireccionFichero("/blog.css", "./cliente/blog.css", "text/css")
-	registrarDireccionFichero("/blog.js", "./cliente/blog.js", "application/javascript")
-
-	registrarDireccionFichero("/javascript_global/sha256.js", "./cliente/javascript_global/sha256.js", "application/javascript")
-	registrarDireccionFichero("/javascript_global/variables.js", "./cliente/javascript_global/variables.js", "application/javascript")
-	registrarDireccionFichero("/javascript_global/commonmark.js", "./cliente/javascript_global/commonmark.js", "application/javascript")
-	registrarDireccionFichero("/javascript_global/jquery.mustache.js", "./cliente/javascript_global/jquery.mustache.js", "application/javascript")
-
-
-	log.Println("Serving font-awesome.")
-	registrarDireccionFichero("/font-awesome.css", "./cliente/css/font-awesome/css/font-awesome.min.css", "text/css")
-	registrarDireccionFichero("/fonts/FontAwesome.otf", "./cliente/css/font-awesome/fonts/FontAwesome.otf", "application/x-font-otf")
-	registrarDireccionFichero("/fonts/fontawesome-webfont.eot", "./cliente/css/font-awesome/fonts/fontawesome-webfont.eot", "application/vnd.ms-fontobject")
-	registrarDireccionFichero("/fonts/fontawesome-webfont.svg", "./cliente/css/font-awesome/fonts/fontawesome-webfont.svg", "image/svg+xml")
-	registrarDireccionFichero("/fonts/fontawesome-webfont.ttf", "./cliente/css/font-awesome/fonts/fontawesome-webfont.ttf", "application/x-font-ttfl")
-	registrarDireccionFichero("/fonts/fontawesome-webfont.woff", "./cliente/css/font-awesome/fonts/fontawesome-webfont.woff", "application/x-font-woff")
-	registrarDireccionFichero("/fonts/fontawesome-webfont.woff2", "./cliente/css/font-awesome/fonts/fontawesome-webfont.woff2", "application/x-font-woff2")
-
-	log.Println("Serving media-icons.")
-	registrarDireccionFichero("/media-icons.css", "./cliente/css/media-icons/media-icons.css", "text/css")
-	registrarDireccionFichero("/media-icons.png", "./cliente/css/media-icons/media-icons.png", "image/png")
-	registrarDireccionFichero("/media-share.png", "./cliente/css/media-icons/media-share.png", "image/png")
-
-
-	log.Println("Adding AdminResourses to the URLs available to send.")
-	registrarDireccionFichero("/admin", "./cliente/soul/soul.html", "text/html")
-	registrarDireccionFichero("/soul.css", "./cliente/soul/soul.css", "text/css")
-	registrarDireccionFichero("/soul.js", "./cliente/soul/soul.js", "application/javascript")
-
-	log.Println("Adding Templates to the URLs available to send.")
-	registrarDireccionFichero("/templates/post.html.mustache", "./cliente/templates/post.html.mustache", "text/html")
-
-	log.Println("Adding images for default theme.")
-	registrarDireccionFichero("/background.png", "./cliente/background.png", "image/png")
-	registrarDireccionFichero("/background-white.png", "./cliente/background-white.png", "image/png")
-	registrarDireccionFichero("/figure_background.png", "./cliente/figure_background.png", "image/png")
-	registrarDireccionFichero("/author.jpg", "./cliente/author.jpg", "image/jpeg")
-
 
 	///*
-	go func(){
+	go func() {
 		log.Println("Starting https login webpage...")
 		err := http.ListenAndServeTLS(":8088", "claves_ssl/cert.pem", "claves_ssl/key.pem", http.HandlerFunc(ServeTLS))
 

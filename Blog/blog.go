@@ -23,13 +23,12 @@
 package soulogBlog
 
 import (
+	"bytes"
 	"encoding/json"
 	"github.com/eu271/Soulog/Blog/db"
-	"github.com/eu271/Soulog/Blog/objetos"
-	"io/ioutil"
-	"log"
+	"github.com/eu271/Soulog/Blog/objects"
 	"io"
-	"bytes"
+	"log"
 )
 
 type blog struct {
@@ -41,26 +40,20 @@ type blog struct {
 	Contraseña string
 	salt       string
 
-	Host_db       string
-	Nombre_db     string
-	Usuario_db    string
-	Contraseña_db string
-
-	soulogDb soulogDb.SoulogDb
+	soulogDb soulObjects.SoulogDb
 }
 
 func AbrirBlog() Soulog {
 	var b blog
 
-	log.Println("Cargando la configuracion del blog.")
+	b.Titulo = ""
+	b.Posts = 5
+	b.Autor = "Eugenio"
+	b.Contraseña = "qwerty"
+	b.salt = "ad"
 
-	blogConfigString, err := ioutil.ReadFile("config.json")
-	err = json.Unmarshal(blogConfigString, &b)
-	if err != nil {
-		log.Println("Error al abrir la configuracion del blog. " + err.Error())
-	}
 
-	b.soulogDb = soulogDb.AbrirDb(b.Host_db, b.Nombre_db, b.Usuario_db, b.Contraseña_db)
+	b.soulogDb = db.AbrirDb()
 
 	b.Posts = b.soulogDb.GetCantidad()
 
