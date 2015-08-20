@@ -18,6 +18,11 @@
       "contentType": "application/javascript"
     },
     {
+      "filePath": "./cliente/js/sha1.js",
+      "filePathServe": "/sha1.js",
+      "contentType": "application/javascript"
+    },
+    {
       "filePath": "./cliente/js/variables.js",
       "filePathServe": "/variables.js",
       "contentType": "application/javascript"
@@ -30,6 +35,11 @@
     {
       "filePath": "./cliente/js/jquery.mustache.js",
       "filePathServe": "/jquery.mustache.js",
+      "contentType": "application/javascript"
+    },
+    {
+      "filePath": "./cliente/js/hashcash.js",
+      "filePathServe": "/hashcash.js",
       "contentType": "application/javascript"
     },
 

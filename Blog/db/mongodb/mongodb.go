@@ -42,7 +42,7 @@ type mongoDb struct {
 	users          *mgo.Collection
 }
 
-func AbrirDb(host, nombre, usuario, contraseña string) soulObjects.SoulogDb {
+func OpenMongodb(host, nombre, usuario, contraseña string) soulObjects.SoulogDb {
 	var mango mongoDb
 	var err error
 
@@ -129,4 +129,8 @@ func (mango mongoDb) GetImagen(nombre string) []byte {
 	log.Println("La imagen " + _p.Id + " ha sido recogida de la base de datos.")
 	return []byte(_p.Imagen)
 
+}
+
+func (mango mongoDb) ValidatePassword(name, password string) (bool, error) {
+	return false, nil
 }

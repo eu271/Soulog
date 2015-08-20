@@ -18,6 +18,12 @@
 	LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 	OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 	SOFTWARE.
+
+	This file contains the logic to validate users and generate tokes for some of
+	the API calls. At the moment should be sufficient.
+
+	TODO: This should use a database like Redis. Where non-persistan non-critical
+	data could be save in-memory.
 */
 
 package soulogApi

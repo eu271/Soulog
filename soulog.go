@@ -23,11 +23,11 @@
 package main
 
 import (
+	"encoding/json"
+	"io/ioutil"
 	"log"
 	"net/http"
 	"os"
-	"io/ioutil"
-	"encoding/json"
 	//"time"
 	//"github.com/eu271/Soulog/Blog/objetos"
 
@@ -35,14 +35,14 @@ import (
 )
 
 const (
-	Index      = "./cliente/blog.html"
+	Index = "./cliente/blog.html"
 )
 
 type fileToServeStruct struct {
 	ServeFiles []struct {
-		FilePath string `json: "filePath"`
+		FilePath      string `json: "filePath"`
 		FilePathServe string `json: "filePathServe"`
-		ContentType string `json: "contentType"`
+		ContentType   string `json: "contentType"`
 	}
 }
 
@@ -50,10 +50,10 @@ func ServirIndex(w http.ResponseWriter, r *http.Request) {
 	http.ServeFile(w, r, Index)
 }
 
-func registrarDireccionFichero(patron string, fichero string, tipo string) {
-	http.HandleFunc(patron, func(w http.ResponseWriter, r *http.Request) {
-		w.Header().Set("type", tipo)
-		http.ServeFile(w, r, fichero)
+func HandleFile(path string, file string, contentType string) {
+	http.HandleFunc(path, func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("type", contentType)
+		http.ServeFile(w, r, file)
 	})
 }
 
@@ -77,13 +77,11 @@ func loadFiles() {
 	log.Println("Adding BlogResources to the URLs available to send.")
 
 	for _, f := range filesToServe.ServeFiles {
-		registrarDireccionFichero(f.FilePathServe, f.FilePath, f.ContentType)
+		HandleFile(f.FilePathServe, f.FilePath, f.ContentType)
 	}
 }
 
 func main() {
-
-
 
 	log.SetPrefix("Debug: ")
 	log.SetOutput(os.Stdout)
@@ -93,7 +91,6 @@ func main() {
 	soulogApi.AgregarFunciones()
 
 	http.HandleFunc("/", ServirIndex)
-
 
 	///*
 	go func() {

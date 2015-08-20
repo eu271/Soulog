@@ -31,4 +31,6 @@ type SoulogDb interface {
 
 	GetImagen(nombre string) []byte
 	InsertarImagen(imagen []byte, nombre string) error
+
+	ValidatePassword(name, password string) (bool, error)
 }

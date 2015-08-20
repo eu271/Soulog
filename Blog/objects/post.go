@@ -25,12 +25,25 @@ import (
 	"time"
 )
 
+const (
+	PUBLISH = iota
+	DRAFT
+	IDEA
+)
+
+var postState = [...]string{
+	"publish",
+	"draft",
+	"idea",
+}
+
 type Post struct {
 	Id              string    `json:"Id"`
 	Permalink       string    `json:"Permalink"`
 	Title           string    `json:"Title"`
 	Slug            string    `json:"Slug"`
 	Content         string    `json:"Content"`
+	State           string    `json: "state"`
 	PublicationDate time.Time `json:"PublicationDate"`
 }
 
@@ -40,6 +53,7 @@ type PostBuilder interface {
 	Title(string) PostBuilder
 	Slug(string) PostBuilder
 	Content(string) PostBuilder
+	State(string) PostBuilder
 	PublicationDate(time.Time) PostBuilder
 
 	Build() (Post, error)
@@ -51,6 +65,7 @@ type postBuilder struct {
 	title           string
 	slug            string
 	content         string
+	state           string
 	publicationDate time.Time
 }
 
@@ -74,6 +89,10 @@ func (post *postBuilder) Content(content string) PostBuilder {
 	post.content = content
 	return post
 }
+func (post *postBuilder) State(state string) PostBuilder {
+	post.state = state
+	return post
+}
 func (post *postBuilder) PublicationDate(publicationDate time.Time) PostBuilder {
 	post.publicationDate = publicationDate
 	return post
@@ -86,6 +105,7 @@ func (post *postBuilder) Build() (Post, error) {
 		Title:           post.title,
 		Slug:            createSlugFromTitle(post.title),
 		Content:         post.content,
+		State:           post.state,
 		PublicationDate: post.publicationDate,
 	}
 	return p, nil
@@ -95,13 +115,15 @@ func NewPostBuilder() PostBuilder {
 	return &postBuilder{}
 }
 
-func NewPost(permalink, title, content string, publicationDate time.Time) Post {
+func NewPost(permalink, title, content, state string, publicationDate time.Time) Post {
 
-	post, _ := NewPostBuilder().Id("").
+	post, _ := NewPostBuilder().
+		Id("").
 		Permalink(permalink).
 		Title(title).
 		Slug(createSlugFromTitle(title)).
 		Content(content).
+		State(state).
 		PublicationDate(publicationDate).
 		Build()
 

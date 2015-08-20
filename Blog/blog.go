@@ -46,30 +46,26 @@ type blog struct {
 func AbrirBlog() Soulog {
 	var b blog
 
+	//Opens the DB based on the file configuration.
+	b.soulogDb = db.OpenDb()
+
 	b.Titulo = ""
-	b.Posts = 5
 	b.Autor = "Eugenio"
 	b.Contraseña = "qwerty"
 	b.salt = "ad"
 
-
-	b.soulogDb = db.AbrirDb()
-
 	b.Posts = b.soulogDb.GetCantidad()
-
-	log.Println(b.Posts)
 
 	return b
 }
 
 type Soulog interface {
-	GetTitulo() string
-	GetAutor() string
 	GetPost(id string) string
-	GetPosts(cantidad uint64) string
 	GetSoul() string
+
 	ExisteUsuario(Nombre string) bool
 	GetContraseña(Nombre string) string
+	LoginUser(name, password string) bool
 
 	SendPost(post soulObjects.Post) error
 	DeletePost(id string) error
@@ -80,22 +76,6 @@ type Soulog interface {
 
 func (b blog) GetPost(id string) string {
 	return b.soulogDb.GetPost(id)
-}
-
-func (b blog) GetPosts(cantidad uint64) string {
-	if b.Posts < cantidad {
-		cantidad = b.Posts
-	}
-
-	return b.soulogDb.GetPosts(cantidad)
-}
-
-func (b blog) GetTitulo() string {
-	return b.Titulo
-}
-
-func (b blog) GetAutor() string {
-	return b.Autor
 }
 
 func (b blog) GetSoul() string {
@@ -123,6 +103,11 @@ func (b blog) ExisteUsuario(Nombre string) bool {
 
 func (b blog) GetContraseña(Nombre string) string {
 	return "65e84be33532fb784c48129675f9eff3a682b27168c0ea744b2cf58ee02337c5" //qwerty
+}
+
+func (b blog) LoginUser(name, password string) bool {
+	login, _ := b.soulogDb.ValidatePassword(name, password)
+	return login
 }
 
 func (b blog) SendPost(post soulObjects.Post) error {

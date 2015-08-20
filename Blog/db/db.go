@@ -1,11 +1,12 @@
 package db
 
 import (
+	"encoding/json"
 	"github.com/eu271/Soulog/Blog/db/mongodb"
 	"github.com/eu271/Soulog/Blog/objects"
-	"encoding/json"
 	"io/ioutil"
 	"log"
+	//"errors"
 )
 
 const (
@@ -13,16 +14,16 @@ const (
 )
 
 type dbConfig struct {
-	DBMS string `json: "DBMS"`
-  DbHost string `json: "dbHost"`
-  DbName string `json: "dbName"`
-  DbUsername string`json: "dbUsername"`
-  DbPassword string `json: "dbPassword"`
+	DBMS       string `json: "DBMS"`
+	DbHost     string `json: "dbHost"`
+	DbName     string `json: "dbName"`
+	DbUsername string `json: "dbUsername"`
+	DbPassword string `json: "dbPassword"`
 
-  DbPepper string `json: "pepper"`
+	DbPepper string `json: "pepper"`
 }
 
-func AbrirDb() soulObjects.SoulogDb {
+func OpenDb() soulObjects.SoulogDb {
 
 	var dbc dbConfig
 
@@ -35,13 +36,10 @@ func AbrirDb() soulObjects.SoulogDb {
 
 	switch dbc.DBMS {
 	case DBMS_mongodb:
-		return AbrirMongo(dbc.DbHost, dbc.DbName, dbc.DbUsername, dbc.DbPassword)
+		log.Println("Opening MongoDb as the main database.")
+		return mongodb.OpenMongodb(dbc.DbHost, dbc.DbName, dbc.DbUsername, dbc.DbPassword)
 
 	}
 
-	return AbrirMongo(dbc.DbHost, dbc.DbName, dbc.DbUsername, dbc.DbPassword)
-}
-
-func AbrirMongo(host, dbname, username, password string) soulObjects.SoulogDb {
-	return mongodb.AbrirDb(host, dbname, username, password)
+	return nil //errors.New("DBMS not selected or invalid.")
 }

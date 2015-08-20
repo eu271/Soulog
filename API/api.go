@@ -41,12 +41,16 @@ type json_error struct {
 	Mensaje string `json:"mensaje"`
 }
 
-//Devuelve la peticion json que se ha echo al servidor.
+//Returns the pettition make to the server.
 func getJson(r *http.Request) *json.Decoder {
 	return json.NewDecoder(r.Body)
 }
 
 func crearLlamada(nombre string, fn func(peticion *json.Decoder) string) http.HandlerFunc {
+
+	//TODO: Check if the object passed to the API is the correct format, and
+	//encode JSON/HTTP into Go Object.
+	//All JSON API should be unther /json/"api_call".
 	return func(w http.ResponseWriter, r *http.Request) {
 		if r.Method == "POST" && r.Body != nil && r.ContentLength > 0 {
 			http.ServeContent(w, r, nombre, time.Now(), strings.NewReader(fn(getJson(r))))
@@ -69,30 +73,9 @@ func getPost(peticion *json.Decoder) string {
 	return soulog.GetPost(p.Id)
 }
 
-func getTitulo(peticion *json.Decoder) string {
-	log.Println("Se esta pidiendo el titulo del blog")
-	return soulog.GetTitulo()
-}
-
 func getSoul(peticion *json.Decoder) string {
 	log.Println("Se esta pidiendo la informacion del blog, \"Soul\"")
 	return soulog.GetSoul()
-}
-
-func getPosts(peticion *json.Decoder) string {
-	type getPostsJson struct {
-		Cantidad uint64 `json:"cantidad"`
-	}
-
-	var p getPostsJson
-	err := peticion.Decode(&p)
-	if err != nil {
-		log.Println("Se ha producido un error al decodificar una peticion de post: " + err.Error())
-	}
-
-	log.Println("Se esta pidiendo una coleccion de posts")
-
-	return soulog.GetPosts(p.Cantidad)
 }
 
 func sendPost(peticion *json.Decoder) string {
@@ -184,9 +167,7 @@ func AgregarFunciones() {
 	log.Println("Agregando funciones a la API")
 
 	http.HandleFunc("/getPost", crearLlamada("getPost", getPost))
-	http.HandleFunc("/getBlogTitle", crearLlamada("getBlogTitle", getTitulo))
 	http.HandleFunc("/getSoul", crearLlamada("getSoul", getSoul))
-	http.HandleFunc("/getPosts", crearLlamada("getPosts", getPosts))
 
 	http.HandleFunc("/getSecion", crearLlamada("getSecion", getSecion))
 	http.HandleFunc("/sendPost", crearLlamada("sendPost", sendPost))
