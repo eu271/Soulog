@@ -22,15 +22,15 @@
 package soulObjects
 
 type SoulogDb interface {
-	GetPost(id string) string
+	QueryPost(id string) string
 	GetPosts(cantidad uint64) string
-	GetCantidad() uint64
+	QueryPostNum() uint64
 
-	SendPost(post Post) error
+	InsertPost(post Post) error
 	DeletePost(id string) error
 
-	GetImagen(nombre string) []byte
-	InsertarImagen(imagen []byte, nombre string) error
+	QueryImage(name string) []byte
+	InsertImage(image []byte, name string) error
 
 	ValidatePassword(name, password string) (bool, error)
 }

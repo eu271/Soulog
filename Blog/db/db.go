@@ -28,7 +28,7 @@ func OpenDb() soulObjects.SoulogDb {
 	var dbc dbConfig
 
 	log.Println("Loading DB configuration.")
-	blogConfigString, err := ioutil.ReadFile("dbConfig.json")
+	blogConfigString, err := ioutil.ReadFile("../../dbConfig.json")
 	err = json.Unmarshal(blogConfigString, &dbc)
 	if err != nil {
 		log.Println("Error decoding dbCOnfig.json. " + err.Error())

@@ -32,26 +32,24 @@ import (
 
 type mongoDb struct {
 	host       string
-	nombre     string
-	usuario    string
-	contraseña string
+	name     string
+	user    string
+	password string
 
 	session_soulog *mgo.Session
 	posts          *mgo.Collection
-	imagenes       *mgo.Collection
+	images       *mgo.Collection
 	users          *mgo.Collection
 }
 
-func OpenMongodb(host, nombre, usuario, contraseña string) soulObjects.SoulogDb {
+func OpenMongodb(host, name, user, password string) soulObjects.SoulogDb {
 	var mango mongoDb
 	var err error
 
 	mango.host = host
-	mango.nombre = nombre
-	mango.usuario = usuario
-	mango.contraseña = contraseña
-
-	log.Println("Abriendo base de datos MongoDb.")
+	mango.name = name
+	mango.user = user
+	mango.password = password
 
 	mango.session_soulog, err = mgo.Dial(mango.host)
 
@@ -59,14 +57,14 @@ func OpenMongodb(host, nombre, usuario, contraseña string) soulObjects.SoulogDb
 		log.Println("Error en la conexion y apertura de la base de datos. " + err.Error())
 	}
 
-	mango.posts = mango.session_soulog.DB(mango.nombre).C("Posts")
-	mango.users = mango.session_soulog.DB(mango.nombre).C("Users")
-	mango.imagenes = mango.session_soulog.DB(mango.nombre).C("Imagenes")
+	mango.posts = mango.session_soulog.DB(mango.name).C("Posts")
+	mango.users = mango.session_soulog.DB(mango.name).C("Users")
+	mango.images = mango.session_soulog.DB(mango.name).C("Images")
 
 	return mango
 }
 
-func (mango mongoDb) GetCantidad() uint64 {
+func (mango mongoDb) QueryPostNum() uint64 {
 	count, err := mango.posts.Count()
 	if err != nil {
 		log.Println("Error llamada GetCantidad a mongoDb. " + err.Error())
@@ -74,7 +72,7 @@ func (mango mongoDb) GetCantidad() uint64 {
 	return uint64(count)
 }
 
-func (mango mongoDb) GetPost(id string) string {
+func (mango mongoDb) QueryPost(id string) string {
 	var p []byte
 	var _p soulObjects.Post
 
@@ -99,7 +97,7 @@ func (mango mongoDb) GetPosts(cantidad uint64) string {
 
 	return p
 }
-func (mango mongoDb) SendPost(post soulObjects.Post) error {
+func (mango mongoDb) InsertPost(post soulObjects.Post) error {
 	return mango.posts.Insert(post)
 }
 
@@ -108,20 +106,20 @@ func (mango mongoDb) DeletePost(id string) error {
 	return err
 }
 
-func (mango mongoDb) InsertarImagen(imagen []byte, nombre string) error {
-	return mango.imagenes.Insert(bson.M{"id": nombre, "imagen": imagen})
+func (mango mongoDb) InsertImage(image []byte, name string) error {
+	return mango.images.Insert(bson.M{"id": name, "imagen": image})
 }
 
-func (mango mongoDb) GetImagen(nombre string) []byte {
+func (mango mongoDb) QueryImage(name string) []byte {
 	type img struct {
 		Id     string
 		Imagen string
 	}
 	var _p img
 
-	log.Println(nombre)
+	log.Println(name)
 
-	err := mango.imagenes.Find(bson.M{"id": nombre}).One(&_p)
+	err := mango.images.Find(bson.M{"id": name}).One(&_p)
 	if err != nil {
 		log.Println("Error reciviendo la imagen de la base de datos: " + err.Error())
 	}
@@ -132,5 +130,8 @@ func (mango mongoDb) GetImagen(nombre string) []byte {
 }
 
 func (mango mongoDb) ValidatePassword(name, password string) (bool, error) {
+	var p []byte
+
+	mango.users.Find(bson.M{"id": name}).One(&p)
 	return false, nil
 }

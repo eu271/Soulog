@@ -2,7 +2,13 @@
 
 var hashcash = function (callback) {
 
-  var base = '060408-23:userName@soulog:'
+  //var base = '060408-23:userName@soulog:'
+  var base = {
+    'date': '15-04-08 12:04',
+    'name': 'userName',
+    'blog': 'soulog',
+    'rand': ''
+  }
   var rand = function () {
     return Math.random().toString(36).slice(-16)
   }
@@ -24,7 +30,8 @@ var hashcash = function (callback) {
     setTimeout(function () {
       var findIt = false
       for (var i = 0; i < num; i++) {
-        var s = CryptoJS.SHA1(base + rand2()).toString()
+        base['rand'] = rand2()
+        var s = CryptoJS.SHA1(JSON.stringify(base)).toString()
         if (s.charAt(0) === '0' &&
             s.charAt(1) === '0' &&
             s.charAt(2) === '0' &&
@@ -41,3 +48,4 @@ var hashcash = function (callback) {
   repeat()
 
 }
+hashcash(alert)

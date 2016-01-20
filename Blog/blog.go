@@ -43,7 +43,7 @@ type blog struct {
 	soulogDb soulObjects.SoulogDb
 }
 
-func AbrirBlog() Soulog {
+func AbrirBlog() soulObjects.Soulog {
 	var b blog
 
 	//Opens the DB based on the file configuration.
@@ -54,28 +54,13 @@ func AbrirBlog() Soulog {
 	b.Contraseña = "qwerty"
 	b.salt = "ad"
 
-	b.Posts = b.soulogDb.GetCantidad()
+	b.Posts = b.soulogDb.QueryPostNum()
 
 	return b
 }
 
-type Soulog interface {
-	GetPost(id string) string
-	GetSoul() string
-
-	ExisteUsuario(Nombre string) bool
-	GetContraseña(Nombre string) string
-	LoginUser(name, password string) bool
-
-	SendPost(post soulObjects.Post) error
-	DeletePost(id string) error
-
-	GetImagen(nombre string) []byte
-	ImagenUpload(imagen io.Reader, nombre string)
-}
-
 func (b blog) GetPost(id string) string {
-	return b.soulogDb.GetPost(id)
+	return b.soulogDb.QueryPost(id)
 }
 
 func (b blog) GetSoul() string {
@@ -97,11 +82,11 @@ func (b blog) GetSoul() string {
 	return string(d)
 }
 
-func (b blog) ExisteUsuario(Nombre string) bool {
-	return Nombre == "Eugenio"
+func (b blog) ExisteUsuario(name string) bool {
+	return name == "Eugenio"
 }
 
-func (b blog) GetContraseña(Nombre string) string {
+func (b blog) GetContraseña(name string) string {
 	return "65e84be33532fb784c48129675f9eff3a682b27168c0ea744b2cf58ee02337c5" //qwerty
 }
 
@@ -111,22 +96,22 @@ func (b blog) LoginUser(name, password string) bool {
 }
 
 func (b blog) SendPost(post soulObjects.Post) error {
-	return b.soulogDb.SendPost(post)
+	return b.soulogDb.InsertPost(post)
 }
 
 func (b blog) DeletePost(id string) error {
 	return b.soulogDb.DeletePost(id)
 }
 
-func (b blog) ImagenUpload(imagen io.Reader, nombre string) {
+func (b blog) ImagenUpload(image io.Reader, name string) {
 	buf := new(bytes.Buffer)
-	buf.ReadFrom(imagen)
-	err := b.soulogDb.InsertarImagen(buf.Bytes(), nombre)
+	buf.ReadFrom(image)
+	err := b.soulogDb.InsertImage(buf.Bytes(), name)
 	if err != nil {
 		log.Println("Error subiendo imagen " + err.Error())
 	}
 }
 
-func (b blog) GetImagen(nombre string) []byte {
-	return b.soulogDb.GetImagen(nombre)
+func (b blog) GetImage(name string) []byte {
+	return b.soulogDb.QueryImage(name)
 }

@@ -23,21 +23,21 @@
 package soulogApi
 
 import (
-	"encoding/json"
-	"github.com/eu271/Soulog/Blog"
-	//"github.com/eu271/Soulog/Blog/objetos"
 	"bytes"
+	"encoding/json"
 	"fmt"
+	"github.com/eu271/Soulog/Blog"
+	"github.com/eu271/Soulog/Blog/objects"
 	"log"
 	"net/http"
 	"strings"
 	"time"
 )
 
-var soulog soulogBlog.Soulog
+var soulog soulObjects.Soulog
 
 type json_error struct {
-	Codigo  uint   `json: "codigo"`
+	Codigo  uint   `json:"codigo"`
 	Mensaje string `json:"mensaje"`
 }
 
@@ -80,10 +80,10 @@ func getSoul(peticion *json.Decoder) string {
 
 func sendPost(peticion *json.Decoder) string {
 	type sendPostJson struct {
-		Titulo           string               `json: "titulo"`
+		Titulo           string               `json:"titulo"`
 		Contenido        string               `json:"contenido"`
-		FechaPublicacion time.Time            `json: "fechaPublicacion"`
-		Secion           autenticarSecionJson `json: "secion"`
+		FechaPublicacion time.Time            `json:"fechaPublicacion"`
+		Secion           autenticarSecionJson `json:"secion"`
 	}
 	var p sendPostJson
 	err := peticion.Decode(&p)
@@ -110,8 +110,8 @@ func sendPost(peticion *json.Decoder) string {
 
 func deletePost(peticion *json.Decoder) string {
 	type deletePostJson struct {
-		Titulo string               `json: "titulo"`
-		Secion autenticarSecionJson `json: "secion"`
+		Titulo string               `json:"titulo"`
+		Secion autenticarSecionJson `json:"secion"`
 	}
 	var p deletePostJson
 	err := peticion.Decode(&p)
@@ -140,7 +140,7 @@ func enviarImagen(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "GET" {
 		nombre := r.URL.Path[len("/imagen/"):]
 		log.Println("Se esta pidiendo imagen " + nombre)
-		http.ServeContent(w, r, nombre, time.Now(), bytes.NewReader(soulog.GetImagen(nombre)))
+		http.ServeContent(w, r, nombre, time.Now(), bytes.NewReader(soulog.GetImage(nombre)))
 	}
 }
 
@@ -164,7 +164,7 @@ func AgregarFunciones() {
 
 	soulog = soulogBlog.AbrirBlog()
 
-	log.Println("Agregando funciones a la API")
+	log.Println("Setting up AJAX server API.")
 
 	http.HandleFunc("/getPost", crearLlamada("getPost", getPost))
 	http.HandleFunc("/getSoul", crearLlamada("getSoul", getSoul))

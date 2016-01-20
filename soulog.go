@@ -40,9 +40,9 @@ const (
 
 type fileToServeStruct struct {
 	ServeFiles []struct {
-		FilePath      string `json: "filePath"`
-		FilePathServe string `json: "filePathServe"`
-		ContentType   string `json: "contentType"`
+		FilePath      string `json:"filePath"`
+		FilePathServe string `json:"filePathServe"`
+		ContentType   string `json:"contentType"`
 	}
 }
 
@@ -83,7 +83,7 @@ func loadFiles() {
 
 func main() {
 
-	log.SetPrefix("Debug: ")
+	log.SetPrefix("\x1b[32mDebug:\x1b[0m ")
 	log.SetOutput(os.Stdout)
 
 	loadFiles()
