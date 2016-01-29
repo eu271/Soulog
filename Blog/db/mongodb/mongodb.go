@@ -31,18 +31,18 @@ import (
 )
 
 type mongoDb struct {
-	host       string
+	host     string
 	name     string
-	user    string
+	user     string
 	password string
 
 	session_soulog *mgo.Session
 	posts          *mgo.Collection
-	images       *mgo.Collection
+	images         *mgo.Collection
 	users          *mgo.Collection
 }
 
-func OpenMongodb(host, name, user, password string) soulObjects.SoulogDb {
+func OpenMongodb(host, name, user, password string) soul.SoulogDb {
 	var mango mongoDb
 	var err error
 
@@ -54,7 +54,8 @@ func OpenMongodb(host, name, user, password string) soulObjects.SoulogDb {
 	mango.session_soulog, err = mgo.Dial(mango.host)
 
 	if err != nil {
-		log.Println("Error en la conexion y apertura de la base de datos. " + err.Error())
+		log.Println("Conecting with the database error. Database configuration error or deplyment with mongo unrechable: " + err.Error())
+		panic("Conection open error: " + err.Error())
 	}
 
 	mango.posts = mango.session_soulog.DB(mango.name).C("Posts")
@@ -72,19 +73,19 @@ func (mango mongoDb) QueryPostNum() uint64 {
 	return uint64(count)
 }
 
-func (mango mongoDb) QueryPost(id string) string {
+func (mango mongoDb) QueryPost(id string) (string, error) {
 	var p []byte
-	var _p soulObjects.Post
+	var _p soul.Post
 
-	_ = mango.posts.Find(bson.M{"id": id}).One(&_p)
-	p, _ = json.Marshal(_p)
-	return string(p)
+	err := mango.posts.Find(bson.M{"id": id}).One(&_p)
+	p, err = json.Marshal(_p)
+	return string(p), err
 
 }
 
 func (mango mongoDb) GetPosts(cantidad uint64) string {
 	var p string
-	var _p soulObjects.Post
+	var _p soul.Post
 	i := mango.posts.Find(nil).Iter()
 	p = "["
 	for i.Next(&_p) {
@@ -97,7 +98,7 @@ func (mango mongoDb) GetPosts(cantidad uint64) string {
 
 	return p
 }
-func (mango mongoDb) InsertPost(post soulObjects.Post) error {
+func (mango mongoDb) InsertPost(post soul.Post) error {
 	return mango.posts.Insert(post)
 }
 

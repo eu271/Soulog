@@ -24,6 +24,8 @@ package main
 
 import (
 	"encoding/json"
+	"github.com/eu271/Soulog/Blog"
+	"github.com/eu271/Soulog/Blog/config"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -82,13 +84,16 @@ func loadFiles() {
 }
 
 func main() {
+	soulConfig, _ := soulConfig.OpenConfig()
+
+	soulog := soulogBlog.AbrirBlog(soulConfig.Dbc)
 
 	log.SetPrefix("\x1b[32mDebug:\x1b[0m ")
 	log.SetOutput(os.Stdout)
 
 	loadFiles()
 
-	soulogApi.AgregarFunciones()
+	soulogApi.AgregarFunciones(soulog)
 
 	http.HandleFunc("/", ServirIndex)
 

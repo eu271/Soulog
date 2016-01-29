@@ -26,7 +26,6 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	"github.com/eu271/Soulog/Blog"
 	"github.com/eu271/Soulog/Blog/objects"
 	"log"
 	"net/http"
@@ -34,7 +33,7 @@ import (
 	"time"
 )
 
-var soulog soulObjects.Soulog
+var soulog soul.Soulog
 
 type json_error struct {
 	Codigo  uint   `json:"codigo"`
@@ -98,7 +97,7 @@ func sendPost(peticion *json.Decoder) string {
 		return string(m)
 	}
 	/*
-		soulog.SendPost(soulObjects.Post{
+		soulog.SendPost(soul.Post{
 			Id:               p.Titulo,
 			Titulo:           p.Titulo,
 			Contenido:        p.Contenido,
@@ -160,9 +159,9 @@ func imageUpload(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, imgInfo.Filename)
 }
 
-func AgregarFunciones() {
+func AgregarFunciones(_soulog soul.Soulog) {
 
-	soulog = soulogBlog.AbrirBlog()
+	soulog = _soulog
 
 	log.Println("Setting up AJAX server API.")
 

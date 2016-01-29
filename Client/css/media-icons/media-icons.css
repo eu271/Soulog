@@ -1,0 +1,58 @@
+.social-icon { background: url('media-icons.png') no-repeat top left; width: 32px; height: 32px; display: block; float:left;}
+.youtubeicon { background-position: 0 0; }
+.twittericon { background-position: 0 -32px; }
+.twitchicon { background-position: 0 -64px; }
+.stackoverflowicon { background-position: 0 -96px; }
+.redditicon { background-position: 0 -128px; }
+.quoraicon { background-position: 0 -160px; }
+.linkedinicon { background-position: 0 -192px; }
+.kickstartericon { background-position: 0 -224px; }
+.instagramicon { background-position: 0 -256px; }
+.githubicon { background-position: 0 -288px; }
+.deviantarticon { background-position: 0 -320px; }
+
+
+.youtubeicon:hover { background-position: -32px 0; }
+.twittericon:hover { background-position: -32px -32px; }
+.twitchicon:hover { background-position: -32px -64px; }
+.stackoverflowicon:hover { background-position: -32px -96px; }
+.redditicon:hover { background-position: -32px -128px; }
+.quoraicon:hover { background-position: -32px -160px; }
+.linkedinicon:hover { background-position: -32px -192px; }
+.kickstartericon:hover { background-position: -32px -224px; }
+.instagramicon:hover { background-position: -32px -256px; }
+.githubicon:hover { background-position: -32px -288px; }
+.deviantarticon:hover { background-position: -32px -320px; }
+
+
+
+.social-share { background: url('media-share.png') no-repeat top left; width: 24px; height: 24px; display: inline-block; }
+.yummly-shareicon { background-position: 0 -10px; }
+.vk-shareicon { background-position: -24px -10px; }
+.tumblr-shareicon { background-position: -72px -10px; }
+.twitter-shareicon { background-position: -48px -10px; }
+.stumbleupon-shareicon { background-position: -96px -10px; }
+.reddit-shareicon { background-position: -120px -10px; }
+.print-shareicon { background-position: -144px -10px; }
+.pinterest-shareicon { background-position: -168px -10px; }
+.linkedin-shareicon { background-position: -192px -10px; }
+.googleplus-shareicon { background-position: -216px -10px; }
+.flattr-shareicon { background-position: -240px -10px; }
+.facebook-shareicon { background-position: -264px -10px; }
+.email-shareicon { background-position: -288px -10px; }
+.diggit-shareicon { background-position: -312px -10px; }
+.buffer-shareicon { background-position: -336px -10px; }
+
+
+@keyframes shareshow {
+  from{background-position-y: 0;}
+  to{background-position-y: -24px;}
+}
+
+
+.social-share:hover {
+  animation-name: shareshow;
+  animation-duration: 0.1s;
+  animation-fill-mode: forwards;
+  cursor: pointer;
+}

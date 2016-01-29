@@ -20,7 +20,7 @@
 	SOFTWARE.
 */
 
-package soulObjects
+package soul
 
 import (
 	"log"

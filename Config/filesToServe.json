@@ -1,0 +1,146 @@
+{
+  "ServeFiles": [
+    {
+      "filePath": "./cliente/blog.css",
+      "filePathServe": "/blog.css",
+      "contentType": "text/css"
+    },
+    {
+      "filePath": "./cliente/blog.js",
+      "filePathServe": "/blog.js",
+      "contentType": "application/javascript"
+    },
+
+
+    {
+      "filePath": "./cliente/js/sha256.js",
+      "filePathServe": "/sha256.js",
+      "contentType": "application/javascript"
+    },
+    {
+      "filePath": "./cliente/js/sha1.js",
+      "filePathServe": "/sha1.js",
+      "contentType": "application/javascript"
+    },
+    {
+      "filePath": "./cliente/js/variables.js",
+      "filePathServe": "/variables.js",
+      "contentType": "application/javascript"
+    },
+    {
+      "filePath": "./cliente/js/commonmark.js",
+      "filePathServe": "/commonmark.js",
+      "contentType": "application/javascript"
+    },
+    {
+      "filePath": "./cliente/js/jquery.mustache.js",
+      "filePathServe": "/jquery.mustache.js",
+      "contentType": "application/javascript"
+    },
+    {
+      "filePath": "./cliente/js/hashcash.js",
+      "filePathServe": "/hashcash.js",
+      "contentType": "application/javascript"
+    },
+
+
+    {
+      "filePath": "./cliente/css/font-awesome/css/font-awesome.min.css",
+      "filePathServe": "/font-awesome.css",
+      "contentType": "text/css"
+    },
+    {
+      "filePath": "./cliente/css/font-awesome/fonts/FontAwesome.otf",
+      "filePathServe": "/fonts/FontAwesome.otf",
+      "contentType": "application/x-font-otf"
+    },
+    {
+      "filePath": "./cliente/css/font-awesome/fonts/fontawesome-webfont.eot",
+      "filePathServe": "/fonts/fontawesome-webfont.eot",
+      "contentType": "application/vnd.ms-fontobject"
+    },
+    {
+      "filePath": "./cliente/css/font-awesome/fonts/fontawesome-webfont.svg",
+      "filePathServe": "/fonts/fontawesome-webfont.svg",
+      "contentType": "image/svg+xml"
+    },
+    {
+      "filePath": "./cliente/css/font-awesome/fonts/fontawesome-webfont.ttf",
+      "filePathServe": "/fonts/fontawesome-webfont.ttf",
+      "contentType": "application/x-font-ttfl"
+    },
+    {
+      "filePath": "./cliente/css/font-awesome/fonts/fontawesome-webfont.woff",
+      "filePathServe": "/fonts/fontawesome-webfont.woff",
+      "contentType": "application/x-font-woff"
+    },
+    {
+      "filePath": "./cliente/css/font-awesome/fonts/fontawesome-webfont.woff2",
+      "filePathServe": "/fonts/fontawesome-webfont.woff2",
+      "contentType": "application/x-font-woff2"
+    },
+
+
+    {
+      "filePath": "./cliente/css/media-icons/media-icons.css",
+      "filePathServe": "/media-icons.css",
+      "contentType": "text/css"
+    },
+    {
+      "filePath": "./cliente/css/media-icons/media-icons.png",
+      "filePathServe": "/media-icons.png",
+      "contentType": "image/png"
+    },
+    {
+      "filePath": "./cliente/css/media-icons/media-share.png",
+      "filePathServe": "/media-share.png",
+      "contentType": "image/png"
+    },
+
+
+    {
+      "filePath": "./cliente/soul/soul.html",
+      "filePathServe": "/admin",
+      "contentType": "text/html"
+    },
+    {
+      "filePath": "./cliente/soul/soul.css",
+      "filePathServe": "/soul.css",
+      "contentType": "text/css"
+    },
+    {
+      "filePath": "./cliente/soul/soul.js",
+      "filePathServe": "/soul.js",
+      "contentType": "application/javascript"
+    },
+
+
+    {
+      "filePath": "./cliente/templates/post.html.mustache",
+      "filePathServe": "/templates/post.html.mustache",
+      "contentType": "text/html"
+    },
+
+
+    {
+      "filePath": "./cliente/background.png",
+      "filePathServe": "/background.png",
+      "contentType": "image/png"
+    },
+    {
+      "filePath": "./cliente/background-white.png",
+      "filePathServe": "/background-white.png",
+      "contentType": "image/png"
+    },
+    {
+      "filePath": "./cliente/figure_background.png",
+      "filePathServe": "/figure_background.png",
+      "contentType": "image/png"
+    },
+    {
+      "filePath": "./cliente/author.jpg",
+      "filePathServe": "/author.jpg",
+      "contentType": "image/jpeg"
+    }
+  ]
+}

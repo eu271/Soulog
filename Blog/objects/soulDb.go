@@ -19,10 +19,10 @@
 	OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 	SOFTWARE.
 */
-package soulObjects
+package soul
 
 type SoulogDb interface {
-	QueryPost(id string) string
+	QueryPost(id string) (string, error)
 	GetPosts(cantidad uint64) string
 	QueryPostNum() uint64
 

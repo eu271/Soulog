@@ -1,0 +1,9 @@
+{
+  "DBMS": "MongoDb",
+  "dbHost": "127.0.0.1:27017",
+  "dbName": "Soulog",
+  "dbUsername": "SoulogAdmin",
+  "dbPassword": "SoulogDefault",
+
+  "pepper": "Mi43MTgyODE4Mjg0NTkwNDUyMzUzNjAyODc0NzEzNTI2NjI0OTc="
+}

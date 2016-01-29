@@ -1,10 +1,8 @@
 package db
 
 import (
-	"encoding/json"
 	"github.com/eu271/Soulog/Blog/db/mongodb"
 	"github.com/eu271/Soulog/Blog/objects"
-	"io/ioutil"
 	"log"
 	//"errors"
 )
@@ -13,7 +11,7 @@ const (
 	DBMS_mongodb = "MongoDb"
 )
 
-type dbConfig struct {
+type DbConfig struct {
 	DBMS       string `json: "DBMS"`
 	DbHost     string `json: "dbHost"`
 	DbName     string `json: "dbName"`
@@ -23,16 +21,7 @@ type dbConfig struct {
 	DbPepper string `json: "pepper"`
 }
 
-func OpenDb() soulObjects.SoulogDb {
-
-	var dbc dbConfig
-
-	log.Println("Loading DB configuration.")
-	blogConfigString, err := ioutil.ReadFile("../../dbConfig.json")
-	err = json.Unmarshal(blogConfigString, &dbc)
-	if err != nil {
-		log.Println("Error decoding dbCOnfig.json. " + err.Error())
-	}
+func OpenDb(dbc DbConfig) soul.SoulogDb {
 
 	switch dbc.DBMS {
 	case DBMS_mongodb:

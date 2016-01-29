@@ -40,14 +40,14 @@ type blog struct {
 	Contraseña string
 	salt       string
 
-	soulogDb soulObjects.SoulogDb
+	soulogDb soul.SoulogDb
 }
 
-func AbrirBlog() soulObjects.Soulog {
+func AbrirBlog(dbConfig db.DbConfig) soul.Soulog {
 	var b blog
 
 	//Opens the DB based on the file configuration.
-	b.soulogDb = db.OpenDb()
+	b.soulogDb = db.OpenDb(dbConfig)
 
 	b.Titulo = ""
 	b.Autor = "Eugenio"
@@ -60,7 +60,8 @@ func AbrirBlog() soulObjects.Soulog {
 }
 
 func (b blog) GetPost(id string) string {
-	return b.soulogDb.QueryPost(id)
+	p, _ := b.soulogDb.QueryPost(id)
+	return p
 }
 
 func (b blog) GetSoul() string {
@@ -95,7 +96,7 @@ func (b blog) LoginUser(name, password string) bool {
 	return login
 }
 
-func (b blog) SendPost(post soulObjects.Post) error {
+func (b blog) SendPost(post soul.Post) error {
 	return b.soulogDb.InsertPost(post)
 }
 

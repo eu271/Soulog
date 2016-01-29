@@ -1,0 +1,414 @@
+/*****************RESET******************************/
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup,
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font: inherit;
+	vertical-align: baseline;
+
+  font-size: 13px; font-family: 'Open Sans', sans-serif;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure,
+footer, header, hgroup, menu, nav, section {
+	display: block;
+}
+body {
+	line-height: 1;
+}
+ol, ul {
+	list-style: none;
+}
+blockquote, q {
+	quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+	content: '';
+	content: none;
+}
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+/*****************END RESET******************************/
+
+body{
+    position: absolute;
+    margin: 0 auto;
+
+    width: 100%;
+    height: 100%;
+
+    background: black;
+
+}
+
+p {
+	padding-top: 10px;
+	padding-bottom: 10px;
+}
+
+h1 {
+	font-size: 34px;
+}
+h2 {
+
+	font-size: 30px;
+}
+.templates {
+  display: none;
+}
+
+.menu {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+
+  height: 33px;
+
+  background: #242628;
+}
+
+.menu ul {
+  list-style: none;
+}
+
+.menu ul li{
+  display: inline-block;
+}
+
+.menu-item {
+  height: 33px;
+  line-height: 33px;
+  width: 75px;
+  text-align: center;
+
+  background: #242628;
+}
+
+.menu-item:hover {
+	cursor: pointer;
+  background: black;
+  color: white;
+}
+.menu-item:hover a{
+  color: white;
+}
+.menu-item a {
+  text-decoration: none;
+	font-weight: 300;
+  color: white;
+}
+
+
+.content {
+  position: absolute;
+  top: 33px;
+  right: 0;
+  left: 0;
+  bottom: 0;
+
+  background: purple;
+}
+
+.ideas {
+	position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+
+	box-sizing: border-box;
+	padding: 10px;
+
+	overflow: auto;
+	background-image: url('background-white.png');
+}
+.ideas ul {
+	list-style: none;
+}
+.ideas ul li {
+	display: inline-block;
+}
+.ideas-editor {
+
+}
+.ideas-display {
+	display: inline-block;
+}
+.idea {
+	display: inline-block;
+	width: 250px;
+	height: 250px;
+
+	box-sizing: border-box;
+	border: 1px solid black;
+
+	overflow: auto;
+
+
+	background-image: url('background-white.png');
+}
+
+.idea-options {
+	height: 30px;
+	text-align: right;
+	background: #242628;
+}
+
+.idea-options ul{
+	list-style: none;
+}
+
+.idea-options ul li {
+	display: inline-block;
+	padding-left: 5px;
+	padding-right: 5px;
+}
+
+.idea-option {
+	display: inline-block;
+	height: 30px;
+	width: 75px;
+	line-height: 30px;
+	font-size: 15px;
+	text-align: center;
+	font-weight: 300;
+	text-decoration: none;
+	color: white;
+}
+.idea-option:hover {
+	background: black;
+}
+
+.idea-content {
+	box-sizing: border-box;
+	padding: 10px;
+}
+
+.idea-title {
+	font-size: 24px;
+	font-weight: bold;
+	padding-bottom: 5px;
+	text-align: center;
+}
+
+.idea-text {
+}
+
+.posts {
+	display: none;
+	position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+
+	background-image: url('background-white.png');
+}
+
+.post {
+	height: 150px;
+	overflow: hidden;
+	margin-top: 20px;
+	box-sizing: border-box;
+
+	border-top: 1px solid black;
+	border-bottom: 1px solid black;
+}
+.post-options {
+	vertical-align: middle;
+	float:right;
+	background: #242628;
+}
+.post-options ul{
+	list-style: none;
+}
+.post-options ul li{
+	display: inline-block;
+}
+.post-option {
+	display: block;
+	cursor: pointer;
+	height: 33px;
+	width: 75px;
+	line-height: 33px;
+	text-align: center;
+
+	padding-left: 5px;
+	padding-right: 5px;
+
+	font-weight: 300;
+	text-decoration: none;
+	color: white;
+}
+
+.post-option:hover {
+	background: black;
+}
+
+.post-content {
+	box-sizing: border-box;
+
+	padding: 20px;
+}
+
+
+
+.post-option-name {
+	display: inline;
+}
+.post-option-icon {
+	display: inline;
+}
+
+
+.editor {
+	display: none;
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+
+
+  background: blue;
+}
+
+.editor-header {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  height: 50px;
+
+
+
+	box-sizing: border-box;
+
+  background: white;
+}
+
+.editor-title {
+  border: 0;
+  padding: 0;
+  height: 50px;
+  width: 100%;
+
+	padding-left: 40px;
+	padding-right: 60px;
+
+	box-sizing: border-box;
+	border-bottom: 1px solid black;
+
+	font-size: 30px;
+	font-weight: bold;
+	letter-spacing: -1px;
+
+	color: #3c4043;
+	background-image: url('background-white.png');
+}
+
+.editor-content {
+  position: absolute;
+  top: 50px;
+  left: 0;
+  bottom: 40px;
+  resize: none;
+
+  border: 0;
+  padding: 0;
+
+  width: 50%;
+
+	box-sizing: border-box;
+	border-right: 1px solid black;
+
+	padding-top: 20px;
+	padding-left: 10px;
+	padding-right: 10px;
+
+	font-family: 'Source Code Pro', monospace; font-weight: 400;
+
+	background-image: url('background-white.png');
+}
+
+.editor-preview {
+  position: absolute;
+  top: 50px;
+  right: 0;
+  left: 50%;
+  bottom: 40px;
+
+  width: 50%;
+
+	box-sizing: border-box;
+	border-right: 1px solid black;
+
+	padding-top: 20px;
+	padding-left: 10px;
+	padding-right: 10px;
+
+
+
+	word-wrap: break-word;
+	overflow-x: hidden;
+	overflow-y: auto;
+
+	background-image: url('background-white.png');
+}
+
+.editor-footer {
+  position: absolute;
+  right: 0;
+  left: 0;
+  bottom: 0;
+
+  height: 40px;
+
+}
+
+.editor-tags {
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 150px;
+
+}
+
+.editor-tags-label {
+	height: 40px;
+	line-height: 40px;
+	float:left;
+
+	padding-left: 10px;
+	padding-right: 10px;
+}
+
+.editor-tags-input-wrapper {
+	display: inline;
+}
+.editor-tags-input {
+
+}
+
+.editor-footer-button {
+	float: right;
+	height: 40px;
+	width: 75px;
+}

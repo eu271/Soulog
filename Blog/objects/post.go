@@ -19,9 +19,11 @@
 	OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 	SOFTWARE.
 */
-package soulObjects
+package soul
 
 import (
+	"bytes"
+	"encoding/json"
 	"time"
 )
 
@@ -29,6 +31,16 @@ const (
 	PUBLISH = iota
 	DRAFT
 	IDEA
+)
+
+const (
+	ID_FIELD              = "Id"
+	PERMALINK_FIELD       = "Permalink"
+	TITLE_FIELD           = "Title"
+	SLUG_FIELD            = "Slug"
+	CONTENT_FIELD         = "Content"
+	STATE_FIELD           = "State"
+	PUBLICATIONDATE_FIELD = "PublicationDate"
 )
 
 var postState = [...]string{
@@ -43,8 +55,12 @@ type Post struct {
 	Title           string    `json:"Title"`
 	Slug            string    `json:"Slug"`
 	Content         string    `json:"Content"`
-	State           string    `json: "state"`
+	State           string    `json:"State"`
 	PublicationDate time.Time `json:"PublicationDate"`
+}
+
+type PostUtil interface {
+	Json(Post) (string, error)
 }
 
 type PostBuilder interface {
@@ -56,6 +72,7 @@ type PostBuilder interface {
 	State(string) PostBuilder
 	PublicationDate(time.Time) PostBuilder
 
+	Json(string) (Post, error)
 	Build() (Post, error)
 }
 
@@ -73,42 +90,75 @@ func (post *postBuilder) Id(id string) PostBuilder {
 	post.id = id
 	return post
 }
+func isValidId(id string) (string, error) {
+	return id, nil
+}
+
 func (post *postBuilder) Permalink(permalink string) PostBuilder {
 	post.permalink = permalink
 	return post
+}
+func isValidPermalink(permalink string) (string, error) {
+	return permalink, nil
 }
 func (post *postBuilder) Title(title string) PostBuilder {
 	post.title = title
 	return post
 }
+func isValidTitle(title string) (string, error) {
+	return title, nil
+}
 func (post *postBuilder) Slug(slug string) PostBuilder {
 	post.slug = slug
 	return post
+}
+func isValidSlug(slug string) (string, error) {
+	return slug, nil
 }
 func (post *postBuilder) Content(content string) PostBuilder {
 	post.content = content
 	return post
 }
+func isValidContent(content string) (string, error) {
+	return content, nil
+}
 func (post *postBuilder) State(state string) PostBuilder {
 	post.state = state
 	return post
+}
+func isValidState(state string) (string, error) {
+	return state, nil
 }
 func (post *postBuilder) PublicationDate(publicationDate time.Time) PostBuilder {
 	post.publicationDate = publicationDate
 	return post
 }
+func isValidPublicationDate(publicationDate time.Time) (time.Time, error) {
+	return publicationDate, nil
+}
+
+func (post *postBuilder) Json(jsonData string) (Post, error) {
+	var m map[string]interface{}
+	err := json.Unmarshal([]byte(jsonData), &m)
+	if err != nil {
+		return Post{}, err
+	}
+	return post.Build()
+}
 
 func (post *postBuilder) Build() (Post, error) {
-	p := Post{
-		Id:              post.id,
-		Permalink:       post.permalink,
-		Title:           post.title,
-		Slug:            createSlugFromTitle(post.title),
-		Content:         post.content,
-		State:           post.state,
-		PublicationDate: post.publicationDate,
-	}
-	return p, nil
+	var p Post
+	var err error
+
+	p.Id, err = isValidId(post.id)
+	p.Permalink, err = isValidPermalink(post.permalink)
+	p.Title, err = isValidTitle(post.title)
+	p.Slug, err = isValidSlug(post.slug)
+	p.Content, err = isValidContent(post.content)
+	p.State, err = isValidState(post.state)
+	p.PublicationDate, err = isValidPublicationDate(post.publicationDate)
+
+	return p, err
 }
 
 func NewPostBuilder() PostBuilder {
@@ -134,4 +184,14 @@ func NewPost(permalink, title, content, state string, publicationDate time.Time)
 	}
 
 	return post
+}
+
+func (post *Post) PostToJson() (string, error) {
+	var compactPost *bytes.Buffer
+	postJson, err := json.Marshal(post)
+	if err != nil {
+		// TODO should panic ???!!!
+	}
+	json.Compact(compactPost, postJson)
+	return compactPost.String(), err
 }

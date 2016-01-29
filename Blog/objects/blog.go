@@ -1,4 +1,4 @@
-package soulObjects
+package soul
 
 import (
 	"io"
