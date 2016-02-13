@@ -26,7 +26,7 @@ type SoulogDb interface {
 	GetPosts(cantidad uint64) string
 	QueryPostNum() uint64
 
-	InsertPost(post Post) error
+	InsertPost(post *Post) error
 	DeletePost(id string) error
 
 	QueryImage(name string) []byte

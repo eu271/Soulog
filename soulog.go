@@ -84,7 +84,7 @@ func loadFiles() {
 }
 
 func main() {
-	soulConfig, _ := soulConfig.OpenConfig()
+	soulConfig, _ := soulconfig.OpenConfig()
 
 	soulog := soulogBlog.AbrirBlog(soulConfig.Dbc)
 

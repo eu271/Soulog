@@ -24,6 +24,7 @@ package soul
 import (
 	"bytes"
 	"encoding/json"
+	"regexp"
 	"time"
 )
 
@@ -43,11 +44,23 @@ const (
 	PUBLICATIONDATE_FIELD = "PublicationDate"
 )
 
-var postState = [...]string{
+const (
+	ID_FIELD_TYPE              = "string"
+	PERMALINK_FIELD_TYPE       = "string"
+	TITLE_FIELD_TYPE           = "string"
+	SLUG_FIELD_TYPE            = "string"
+	CONTENT_FIELD_TYPE         = "string"
+	STATE_FIELD_TYPE           = "string"
+	PUBLICATIONDATE_FIELD_TYPE = "time.Time"
+)
+
+var postState = []string{
 	"publish",
 	"draft",
 	"idea",
 }
+
+var validIdRegexpTest = regexp.MustCompile("[a-zA-Z0-9]")
 
 type Post struct {
 	Id              string    `json:"Id"`
@@ -72,8 +85,8 @@ type PostBuilder interface {
 	State(string) PostBuilder
 	PublicationDate(time.Time) PostBuilder
 
-	Json(string) (Post, error)
-	Build() (Post, error)
+	Json(string) (*Post, error)
+	Build() (*Post, error)
 }
 
 type postBuilder struct {
@@ -91,6 +104,13 @@ func (post *postBuilder) Id(id string) PostBuilder {
 	return post
 }
 func isValidId(id string) (string, error) {
+	if id == "" {
+		return "", &NilField{object: "Post", field: "Id"}
+	}
+
+	if !validIdRegexpTest.MatchString(id) {
+		return "", &TypeError{object: "Post", expectedType: " must compile regex: " + validIdRegexpTest.String(), field: "Id"}
+	}
 	return id, nil
 }
 
@@ -120,6 +140,7 @@ func (post *postBuilder) Content(content string) PostBuilder {
 	return post
 }
 func isValidContent(content string) (string, error) {
+	// TODO Should test markdown compilant content.
 	return content, nil
 }
 func (post *postBuilder) State(state string) PostBuilder {
@@ -127,6 +148,9 @@ func (post *postBuilder) State(state string) PostBuilder {
 	return post
 }
 func isValidState(state string) (string, error) {
+	if !Contains(state, postState) {
+		return "", &TypeError{object: "Post", expectedType: "State", field: "State"}
+	}
 	return state, nil
 }
 func (post *postBuilder) PublicationDate(publicationDate time.Time) PostBuilder {
@@ -137,38 +161,125 @@ func isValidPublicationDate(publicationDate time.Time) (time.Time, error) {
 	return publicationDate, nil
 }
 
-func (post *postBuilder) Json(jsonData string) (Post, error) {
+func (post *postBuilder) Json(jsonData string) (*Post, error) {
 	var m map[string]interface{}
+	var _temp interface{}
+
 	err := json.Unmarshal([]byte(jsonData), &m)
 	if err != nil {
-		return Post{}, err
+		return nil, err
 	}
+
+	typeCheck := func(field, expected string, couldNotBeNil bool, data interface{}) (interface{}, error) {
+		if data == nil && couldNotBeNil {
+			return nil, &NilField{object: "Post", field: field}
+		}
+		switch data.(type) {
+		case string:
+			if expected == "string" {
+				return data.(string), nil
+			}
+		case time.Time:
+			if expected == "time.Time" {
+				return data.(time.Time), nil
+			}
+		}
+		return nil, &TypeError{object: "Post", expectedType: expected, field: field}
+	}
+
+	_temp, err = typeCheck(ID_FIELD, ID_FIELD_TYPE, true, m[ID_FIELD])
+	if err != nil {
+		return nil, err
+	}
+	post.id = _temp.(string)
+
+	_temp, err = typeCheck(PERMALINK_FIELD, PERMALINK_FIELD_TYPE, true, m[PERMALINK_FIELD])
+	if err != nil {
+		return nil, err
+	}
+	post.permalink = _temp.(string)
+
+	_temp, err = typeCheck(TITLE_FIELD, TITLE_FIELD_TYPE, true, m[TITLE_FIELD])
+	if err != nil {
+		return nil, err
+	}
+	post.title = _temp.(string)
+
+	_temp, err = typeCheck(SLUG_FIELD, SLUG_FIELD_TYPE, true, m[SLUG_FIELD])
+	if err != nil {
+		return nil, err
+	}
+	post.slug = _temp.(string)
+
+	_temp, err = typeCheck(CONTENT_FIELD, CONTENT_FIELD_TYPE, true, m[CONTENT_FIELD])
+	if err != nil {
+		return nil, err
+	}
+	post.content = _temp.(string)
+
+	_temp, err = typeCheck(STATE_FIELD, STATE_FIELD_TYPE, true, m[STATE_FIELD])
+	if err != nil {
+		return nil, err
+	}
+	post.state = _temp.(string)
+
+	// TODO Rewrite the checking.
+	if m[PUBLICATIONDATE_FIELD] != nil {
+		_temp, _ = time.Parse(time.RFC3339Nano, _temp.(string))
+	}
+	_temp, err = typeCheck(PUBLICATIONDATE_FIELD, PUBLICATIONDATE_FIELD_TYPE, false, _temp)
+	if err != nil {
+		return nil, err
+	}
+	post.publicationDate = _temp.(time.Time)
+
 	return post.Build()
 }
 
-func (post *postBuilder) Build() (Post, error) {
+func (post *postBuilder) Build() (*Post, error) {
 	var p Post
 	var err error
 
 	p.Id, err = isValidId(post.id)
+	if err != nil {
+		return nil, err
+	}
 	p.Permalink, err = isValidPermalink(post.permalink)
+	if err != nil {
+		return nil, err
+	}
 	p.Title, err = isValidTitle(post.title)
+	if err != nil {
+		return nil, err
+	}
 	p.Slug, err = isValidSlug(post.slug)
+	if err != nil {
+		return nil, err
+	}
 	p.Content, err = isValidContent(post.content)
+	if err != nil {
+		return nil, err
+	}
 	p.State, err = isValidState(post.state)
+	if err != nil {
+		return nil, err
+	}
 	p.PublicationDate, err = isValidPublicationDate(post.publicationDate)
+	if err != nil {
+		return nil, err
+	}
 
-	return p, err
+	return &p, err
 }
 
 func NewPostBuilder() PostBuilder {
 	return &postBuilder{}
 }
 
-func NewPost(permalink, title, content, state string, publicationDate time.Time) Post {
+func NewPost(permalink, title, content, state string, publicationDate time.Time) *Post {
 
 	post, _ := NewPostBuilder().
-		Id("").
+		Id("24324").
 		Permalink(permalink).
 		Title(title).
 		Slug(createSlugFromTitle(title)).
@@ -176,12 +287,6 @@ func NewPost(permalink, title, content, state string, publicationDate time.Time)
 		State(state).
 		PublicationDate(publicationDate).
 		Build()
-
-	if post.Permalink == "" {
-		post.Permalink = post.Slug
-	} else {
-		post.Slug = post.Permalink
-	}
 
 	return post
 }

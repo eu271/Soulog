@@ -1,8 +1,7 @@
-package soulConfig
+package soulconfig
 
 import (
 	"encoding/json"
-	"github.com/eu271/Soulog/Blog/db"
 	"io/ioutil"
 	"log"
 	"os"
@@ -12,8 +11,18 @@ const (
 	dbConfigFile = "./Config/dbConfig.json"
 )
 
+type DbConfig struct {
+	DBMS       string `json: "DBMS"`
+	DbHost     string `json: "dbHost"`
+	DbName     string `json: "dbName"`
+	DbUsername string `json: "dbUsername"`
+	DbPassword string `json: "dbPassword"`
+
+	DbPepper string `json: "pepper"`
+}
+
 type SoulConfig struct {
-	Dbc db.DbConfig
+	Dbc DbConfig
 }
 
 func OpenConfig() (SoulConfig, error) {

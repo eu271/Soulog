@@ -4,10 +4,11 @@ import (
 	"github.com/eu271/Soulog/Blog/objects"
 )
 
-func NewTestPost() soul.Post {
-	var post soul.Post
+func NewTestPost() *soul.Post {
+	var post *soul.Post
+	var err error
 
-	post, _ = soul.NewPostBuilder().
+	post, err = soul.NewPostBuilder().
 		Id("asdasd").
 		Permalink("asdasdasd").
 		Title("asdasda").
@@ -15,6 +16,14 @@ func NewTestPost() soul.Post {
 		Content("asdasdasdasd").
 		State("publish").
 		Build()
+
+	if err != nil {
+		panic(err.Error())
+	}
+	if post == nil {
+		panic("Post es nil")
+	}
+
 	return post
 
 }

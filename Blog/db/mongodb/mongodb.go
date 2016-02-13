@@ -24,10 +24,15 @@ package mongodb
 
 import (
 	"encoding/json"
+	"github.com/eu271/Soulog/Blog/config"
 	"github.com/eu271/Soulog/Blog/objects"
 	"gopkg.in/mgo.v2"
 	"gopkg.in/mgo.v2/bson"
 	"log"
+)
+
+const (
+	DBMS = "MongoDb"
 )
 
 type mongoDb struct {
@@ -42,14 +47,14 @@ type mongoDb struct {
 	users          *mgo.Collection
 }
 
-func OpenMongodb(host, name, user, password string) soul.SoulogDb {
+func OpenMongodb(dbc soulconfig.DbConfig) soul.SoulogDb {
 	var mango mongoDb
 	var err error
 
-	mango.host = host
-	mango.name = name
-	mango.user = user
-	mango.password = password
+	mango.host = dbc.DbHost
+	mango.name = dbc.DbName
+	mango.user = dbc.DbUsername
+	mango.password = dbc.DbPassword
 
 	mango.session_soulog, err = mgo.Dial(mango.host)
 
@@ -98,8 +103,8 @@ func (mango mongoDb) GetPosts(cantidad uint64) string {
 
 	return p
 }
-func (mango mongoDb) InsertPost(post soul.Post) error {
-	return mango.posts.Insert(post)
+func (mango mongoDb) InsertPost(post *soul.Post) error {
+	return mango.posts.Insert(*post)
 }
 
 func (mango mongoDb) DeletePost(id string) error {

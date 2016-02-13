@@ -25,6 +25,7 @@ package soulogBlog
 import (
 	"bytes"
 	"encoding/json"
+	"github.com/eu271/Soulog/Blog/config"
 	"github.com/eu271/Soulog/Blog/db"
 	"github.com/eu271/Soulog/Blog/objects"
 	"io"
@@ -43,7 +44,7 @@ type blog struct {
 	soulogDb soul.SoulogDb
 }
 
-func AbrirBlog(dbConfig db.DbConfig) soul.Soulog {
+func AbrirBlog(dbConfig soulconfig.DbConfig) soul.Soulog {
 	var b blog
 
 	//Opens the DB based on the file configuration.
@@ -97,7 +98,7 @@ func (b blog) LoginUser(name, password string) bool {
 }
 
 func (b blog) SendPost(post soul.Post) error {
-	return b.soulogDb.InsertPost(post)
+	return b.soulogDb.InsertPost(&post)
 }
 
 func (b blog) DeletePost(id string) error {
