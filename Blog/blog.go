@@ -60,9 +60,16 @@ func AbrirBlog(dbConfig soulconfig.DbConfig) soul.Soulog {
 	return b
 }
 
-func (b blog) GetPost(id string) string {
-	p, _ := b.soulogDb.QueryPost(id)
-	return p
+func (b blog) GetPost(id string) (*soul.Post, error) {
+	return b.soulogDb.QueryPost(id)
+}
+
+func (b blog) SavePost(post soul.Post) error {
+	return b.soulogDb.InsertPost(&post)
+}
+
+func (b blog) DeletePost(id string) error {
+	return b.soulogDb.DeletePost(id)
 }
 
 func (b blog) GetSoul() string {
@@ -95,14 +102,6 @@ func (b blog) GetContraseña(name string) string {
 func (b blog) LoginUser(name, password string) bool {
 	login, _ := b.soulogDb.ValidatePassword(name, password)
 	return login
-}
-
-func (b blog) SendPost(post soul.Post) error {
-	return b.soulogDb.InsertPost(&post)
-}
-
-func (b blog) DeletePost(id string) error {
-	return b.soulogDb.DeletePost(id)
 }
 
 func (b blog) ImagenUpload(image io.Reader, name string) {

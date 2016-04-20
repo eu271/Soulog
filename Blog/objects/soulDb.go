@@ -22,7 +22,7 @@
 package soul
 
 type SoulogDb interface {
-	QueryPost(id string) (string, error)
+	QueryPost(id string) (*Post, error)
 	GetPosts(cantidad uint64) string
 	QueryPostNum() uint64
 

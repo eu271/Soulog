@@ -4,6 +4,7 @@ type TypeError struct {
 	object       string
 	expectedType string
 	field        string
+	value        interface{}
 }
 
 func (e *TypeError) Error() string {

@@ -48,4 +48,3 @@ var hashcash = function (callback) {
   repeat()
 
 }
-hashcash(alert)

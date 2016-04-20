@@ -26,7 +26,7 @@
 	data could be save in-memory.
 */
 
-package soulogApi
+package soulapi
 
 import (
 	"crypto/sha1"

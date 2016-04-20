@@ -5,6 +5,7 @@ import (
 	"github.com/eu271/Soulog/Blog/objects"
 	"github.com/eu271/Soulog/TestUtil/objects"
 	"testing"
+	"time"
 )
 
 var dbConfig = soulconfig.DbConfig{
@@ -19,37 +20,43 @@ var dbConfig = soulconfig.DbConfig{
 
 //Test for the function QueryPost in the interface SoulogDb. Used in the
 //DBMS tests.
-func QueryPostTest(db soul.SoulogDb, id string, t *testing.T) {
+func QueryPostTest(db soul.SoulogDb, t *testing.T) {
 
 	var postToDb *soul.Post
-	var postFromDb *soul.Post
-	var postJson string
 
 	postToDb = objectsTestUtil.NewTestPost()
 
-	err := db.InsertPost(postToDb)
+	InsertPostTest(db, postToDb, t)
+}
+
+//Test for the function InsertPost in the interface SoulogDb. Used in the
+//DBMS tests.
+func InsertPostTest(db soul.SoulogDb, post *soul.Post, t *testing.T) {
+
+	var postFromDb *soul.Post
+
+	err := db.InsertPost(post)
 	if err != nil {
 		t.Error("Error inserting post: " + err.Error())
 	}
 
-	postJson, err = db.QueryPost(postToDb.Id)
+	postFromDb, err = db.QueryPost(post.Id)
 	if err != nil {
 		t.Error("Error getting post: " + err.Error())
 	}
 
-	postFromDb, err = soul.NewPostBuilder().Json(postJson)
-
-	if err != nil {
-		t.Error(err.Error())
-	}
-
 	if postFromDb == nil {
-		t.Error("Post from db is nil")
+		t.Error("Post form db is nil")
 	}
 
-	if postFromDb.Id != postToDb.Id {
-		t.Error("The inserted post is not he same as the one retrive form the db. Initial post id=" + postToDb.Id + " Recive post id=" + postFromDb.Id)
+	if post.Id != postFromDb.Id {
+		t.Error("The inserted post is not the same as the one retrive from db. Initial post id=" + post.Id + " Recive post id=" + postFromDb.Id)
 	}
+}
+
+func QueryPostBetweenDates(db soul.SoulogDb, from, to time.Time, t *testing.T) {
+	var post1, post2, post3 *soul.Post
+
 }
 
 func OpenDb(openDb func(dbConfig soulconfig.DbConfig) soul.SoulogDb, t *testing.T) soul.SoulogDb {

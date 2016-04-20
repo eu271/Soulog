@@ -20,7 +20,7 @@
 	SOFTWARE.
 */
 
-package soulogApi
+package soulapi
 
 import (
 	"bytes"
@@ -49,7 +49,7 @@ func crearLlamada(nombre string, fn func(peticion *json.Decoder) string) http.Ha
 
 	//TODO: Check if the object passed to the API is the correct format, and
 	//encode JSON/HTTP into Go Object.
-	//All JSON API should be unther /json/"api_call".
+	//All JSON API should be under /json/"api_call".
 	return func(w http.ResponseWriter, r *http.Request) {
 		if r.Method == "POST" && r.Body != nil && r.ContentLength > 0 {
 			http.ServeContent(w, r, nombre, time.Now(), strings.NewReader(fn(getJson(r))))
@@ -63,13 +63,28 @@ func getPost(peticion *json.Decoder) string {
 	}
 
 	var p getPostJson
+	var post *soul.Post
+	var jsonPost string
+
 	err := peticion.Decode(&p)
 	if err != nil {
 		log.Println("Se ha producido un error al decodificar una peticion de post: " + err.Error())
 	}
 	log.Println("Se esta pidiendo un post: " + p.Id)
 
-	return soulog.GetPost(p.Id)
+	post, err = soulog.GetPost(p.Id)
+
+	if err != nil {
+		//TODO: send not found
+	}
+
+	jsonPost, err = post.PostToJson()
+
+	if err != nil {
+		//TODO: send 405 server error, conversion failed
+	}
+
+	return jsonPost
 }
 
 func getSoul(peticion *json.Decoder) string {
@@ -129,10 +144,25 @@ func deletePost(peticion *json.Decoder) string {
 }
 
 func enviarPost(w http.ResponseWriter, r *http.Request) {
+	var post *soul.Post
+	var jsonPost string
+	var err error
+
 	if r.Method == "GET" {
 		titulo := r.URL.Path[len("/post/"):]
 		log.Println("Se esta pidiendo " + titulo)
-		http.ServeContent(w, r, "post", time.Now(), strings.NewReader(soulog.GetPost(titulo)))
+
+		post, err = soulog.GetPost(titulo)
+		if err != nil {
+
+		}
+
+		jsonPost, err = post.PostToJson()
+		if err != nil {
+
+		}
+
+		http.ServeContent(w, r, "post", time.Now(), strings.NewReader(jsonPost))
 	}
 }
 func enviarImagen(w http.ResponseWriter, r *http.Request) {

@@ -15,4 +15,5 @@ func TestMain(t *testing.T) {
 func TestMongodbQueryPost(t *testing.T) {
 	dbTestUtil.QueryPostTest(soulogDb, "1", t)
 	dbTestUtil.QueryPostTest(soulogDb, "1", t)
+
 }

@@ -1,23 +1,22 @@
-/*
-	Copyright (c) 2015 Eugenio Ochoa
+/*pyright (c) 2015 Eugenio Ochoa
 
-	Permission is hereby granted, free of charge, to any person obtaining a copy
-	of this software and associated documentation files (the "Software"), to deal
-	in the Software without restriction, including without limitation the rights
-	to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-	copies of the Software, and to permit persons to whom the Software is
-	furnished to do so, subject to the following conditions:
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
 
-	The above copyright notice and this permission notice shall be included in all
-	copies or substantial portions of the Software.
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
 
-	THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-	IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-	FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-	AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-	LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-	OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-	SOFTWARE.
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
 */
 
 package main
@@ -37,7 +36,7 @@ import (
 )
 
 const (
-	Index = "./cliente/blog.html"
+	Index = "./Client/blog.html"
 )
 
 type fileToServeStruct struct {
@@ -70,7 +69,7 @@ func ServeTLS(w http.ResponseWriter, r *http.Request) {
 func loadFiles() {
 	var filesToServe fileToServeStruct
 
-	filesToServeString, _ := ioutil.ReadFile("filesToServe.json")
+	filesToServeString, _ := ioutil.ReadFile("Config/filesToServe.json")
 	err := json.Unmarshal(filesToServeString, &filesToServe)
 	if err != nil {
 		log.Println("Error decoding the default configuration. " + err.Error())
@@ -80,6 +79,7 @@ func loadFiles() {
 
 	for _, f := range filesToServe.ServeFiles {
 		HandleFile(f.FilePathServe, f.FilePath, f.ContentType)
+		log.Println("Adding resource: " + f.FilePath + " in url: " + f.FilePathServe)
 	}
 }
 
@@ -93,14 +93,14 @@ func main() {
 
 	loadFiles()
 
-	soulogApi.AgregarFunciones(soulog)
+	soulapi.AgregarFunciones(soulog)
 
 	http.HandleFunc("/", ServirIndex)
 
 	///*
 	go func() {
 		log.Println("Starting https login webpage...")
-		err := http.ListenAndServeTLS(":8088", "claves_ssl/cert.pem", "claves_ssl/key.pem", http.HandlerFunc(ServeTLS))
+		err := http.ListenAndServeTLS(":8088", "Config/claves_ssl/cert.pem", "Config/claves_ssl/key.pem", http.HandlerFunc(ServeTLS))
 
 		log.Println("Error in tls server: " + err.Error())
 	}()
